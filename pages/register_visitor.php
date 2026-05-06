@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  VALUES (?,?,?,?,?,?,?,NOW(),'checked_in',?)"
             );
             $dept_id_val = $dept_id ?: null;
-            $stmt->bind_param('isissssi',
+            $stmt->bind_param('iisssssi',
                 $visitor_id, $dept_id_val, $person_meet, $purpose,
                 $vehicle, $badge_num, $visitor_type,
                 $_SESSION['admin_id']

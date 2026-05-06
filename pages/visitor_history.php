@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/auth_check.php';
-require_permission('view_visitors');
+require_permission('view_history');
 
 /* ══════════════════════════════════════════════════════════════
    1. FILTER PARAMS (from GET / URL query string)

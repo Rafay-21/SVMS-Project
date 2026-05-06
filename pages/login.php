@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 4. Lookup admin by email (prepared statement)
     $admin = query_one(
-        'SELECT id, name, email, password, role_id, is_active, otp_enabled
+        'SELECT id, full_name, email, password, role_id, is_active, otp_enabled
          FROM admins WHERE email = ? LIMIT 1',
         's',
         [$raw_email]
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 7. Persist minimal admin info into session
     $_SESSION['admin_id']    = (int)$admin['id'];
-    $_SESSION['admin_name']  = $admin['name'];
+    $_SESSION['admin_name']  = $admin['full_name'];
     $_SESSION['admin_email'] = $admin['email'];
     $_SESSION['role_id']     = (int)$admin['role_id'];
     $_SESSION['login_time']  = time();
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 9. Build and send OTP email
     ['html' => $html_body, 'text' => $_otp_txt] = render_email_template('otp_code', [
-        'admin_name'     => $admin['name'],
+        'admin_name'     => $admin['full_name'],
         'otp_code'       => $otp_plain,
         'expiry_minutes' => OTP_EXPIRY_MINUTES,
         'site_name'      => SITE_NAME,

@@ -7,7 +7,7 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../includes/badge_helpers.php';
-require_permission('view_visitors');
+require_permission('view_history');
 
 /* ── Token-based lookup (QR badge scan) ─────────────────────── */
 if (isset($_GET['token']) && !isset($_GET['id'])) {

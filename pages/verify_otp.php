@@ -44,7 +44,7 @@ if (isset($_GET['resend'])) {
         exit;
     }
 
-    $admin = query_one('SELECT name, email FROM admins WHERE id = ? LIMIT 1', 'i', [$admin_id]);
+    $admin = query_one('SELECT full_name, email FROM admins WHERE id = ? LIMIT 1', 'i', [$admin_id]);
     if (!$admin) {
         session_unset(); session_destroy();
         header('Location: ' . BASE_URL . 'pages/login.php');
@@ -64,7 +64,7 @@ if (isset($_GET['resend'])) {
     $_SESSION['otp_resend_after'] = time() + 60;
 
     ['html' => $html_body, 'text' => $_otp_txt] = render_email_template('otp_code', [
-        'admin_name'     => $admin['name'],
+        'admin_name'     => $admin['full_name'],
         'otp_code'       => $otp_plain,
         'expiry_minutes' => OTP_EXPIRY_MINUTES,
         'site_name'      => SITE_NAME,

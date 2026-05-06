@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = sanitize($_POST['email'] ?? '');
         if (!$name) { flash('error', 'Name is required.'); }
         else {
-            query_exec('UPDATE admin_users SET name=?, email=? WHERE id=?', 'ssi', [$name, $email, $admin_id]);
+            query_exec('UPDATE admins SET full_name=?, email=? WHERE id=?', 'ssi', [$name, $email, $admin_id]);
             $_SESSION['admin_name'] = $name;
             log_action('profile_update', $admin_id);
             flash('success', 'Profile updated successfully.');
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$admin = query_one('SELECT id, name, email, role, created_at, last_login FROM admin_users WHERE id=? LIMIT 1', 'i', [(int)$_SESSION['admin_id']]);
+$admin = query_one('SELECT id, full_name, email, role_id, created_at, last_login_at FROM admins WHERE id=? LIMIT 1', 'i', [(int)$_SESSION['admin_id']]);
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="container" style="max-width:900px;">
@@ -69,12 +69,12 @@ include __DIR__ . '/../includes/header.php';
           <div style="text-align:center;margin-bottom:24px;">
             <img src="<?= $_SESSION['admin_avatar'] ? BASE_URL . 'assets/uploads/' . e($_SESSION['admin_avatar']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
                  style="width:90px;height:90px;border-radius:50%;border:3px solid var(--secondary);object-fit:cover;" alt="">
-            <div style="margin-top:8px;font-weight:600;"><?= e($admin['name'] ?? '') ?></div>
-            <div style="font-size:var(--text-sm);color:var(--text-muted);"><?= e(role_label($admin['role'] ?? '')) ?></div>
+            <div style="margin-top:8px;font-weight:600;"><?= e($admin['full_name'] ?? '') ?></div>
+            <div style="font-size:var(--text-sm);color:var(--text-muted);"><?= e(role_label((int)($admin['role_id'] ?? 0))) ?></div>
           </div>
           <div class="form-group">
             <label>Full Name <span class="required">*</span></label>
-            <input type="text" name="name" class="form-control" value="<?= e($admin['name'] ?? '') ?>" data-rules="required" required>
+            <input type="text" name="name" class="form-control" value="<?= e($admin['full_name'] ?? '') ?>" data-rules="required" required>
           </div>
           <div class="form-group">
             <label>Email Address</label>
@@ -82,8 +82,8 @@ include __DIR__ . '/../includes/header.php';
           </div>
           <div style="color:var(--text-muted);font-size:var(--text-sm);">
             Member since <?= format_datetime($admin['created_at'] ?? '', 'M Y') ?>
-            <?php if ($admin['last_login'] ?? null): ?>
-              &nbsp;·&nbsp; Last login <?= format_datetime($admin['last_login'], 'M d, Y g:i A') ?>
+            <?php if ($admin['last_login_at'] ?? null): ?>
+              &nbsp;·&nbsp; Last login <?= format_datetime($admin['last_login_at'], 'M d, Y g:i A') ?>
             <?php endif; ?>
           </div>
         </div>

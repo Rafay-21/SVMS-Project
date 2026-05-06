@@ -10,38 +10,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'create') {
         $name  = sanitize($_POST['name']  ?? '');
+        $uname = sanitize($_POST['username'] ?? strtolower(preg_replace('/[^a-z0-9]/i', '', $_POST['name'] ?? '')));
         $email = sanitize($_POST['email'] ?? '');
-        $role  = sanitize($_POST['role']  ?? 'receptionist');
+        $role_slug = sanitize($_POST['role'] ?? 'receptionist');
         $pass  = $_POST['password'] ?? '';
         $pw_err = validate_password_strength($pass);
+        // Map role slug to role_id
+        $role_row = query_one('SELECT id FROM roles WHERE slug = ? LIMIT 1', 's', [$role_slug]);
+        $role_id  = $role_row ? (int)$role_row['id'] : 3;
         if (!$name || !$email || !$pass) {
             flash('error', 'Name, email and password are required.');
         } elseif ($pw_err !== '') {
             flash('error', $pw_err);
-        } elseif (query_one('SELECT id FROM admin_users WHERE email=? LIMIT 1', 's', [$email])) {
+        } elseif (query_one('SELECT id FROM admins WHERE email=? LIMIT 1', 's', [$email])) {
             flash('error', 'An account with that email already exists.');
         } else {
             $hash = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
+            // Auto-generate username if empty or conflicted
+            $base_uname = $uname ?: strtolower(str_replace(' ', '_', $name));
+            $uname_try  = substr($base_uname, 0, 40);
+            $suffix = 1;
+            while (query_one('SELECT id FROM admins WHERE username=? LIMIT 1', 's', [$uname_try])) {
+                $uname_try = substr($base_uname, 0, 36) . $suffix++;
+            }
             query_exec(
-                'INSERT INTO admin_users (name, email, password_hash, role, is_active, created_at) VALUES (?,?,?,?,1,NOW())',
-                'ssss', [$name, $email, $hash, $role]
+                'INSERT INTO admins (full_name, username, email, password, role_id, is_active) VALUES (?,?,?,?,?,1)',
+                'ssssi', [$name, $uname_try, $email, $hash, $role_id]
             );
             $new_uid = last_insert_id();
             record_password_history($new_uid, $hash);
-            log_action('user_create', $new_uid, json_encode(['email' => $email, 'role' => $role]));
+            log_action('user_create', $new_uid, json_encode(['email' => $email, 'role_id' => $role_id]));
             flash('success', 'User created successfully.');
         }
     } elseif ($action === 'toggle_active') {
         $uid = (int)($_POST['id'] ?? 0);
         if ($uid && $uid !== (int)$_SESSION['admin_id']) {
-            query_exec('UPDATE admin_users SET is_active = NOT is_active WHERE id=?', 'i', [$uid]);
+            query_exec('UPDATE admins SET is_active = IF(is_active=1, 0, 1) WHERE id=?', 'i', [$uid]);
             log_action('user_toggle', $uid);
             flash('info', 'User status updated.');
         }
     } elseif ($action === 'delete') {
         $uid = (int)($_POST['id'] ?? 0);
         if ($uid && $uid !== (int)$_SESSION['admin_id']) {
-            query_exec('DELETE FROM admin_users WHERE id=?', 'i', [$uid]);
+            query_exec('DELETE FROM admins WHERE id=?', 'i', [$uid]);
             log_action('user_delete', $uid);
             flash('info', 'User deleted.');
         }
@@ -55,10 +66,10 @@ $where = '1=1';
 $params = []; $types = '';
 if ($q) {
     $like = '%' . $q . '%';
-    $where .= ' AND (name LIKE ? OR email LIKE ?)';
+    $where .= ' AND (full_name LIKE ? OR email LIKE ?)';
     $params = [$like, $like]; $types = 'ss';
 }
-$users = query_all("SELECT id,name,email,role,is_active,created_at,last_login FROM admin_users WHERE $where ORDER BY created_at DESC", $types, $params);
+$users = query_all("SELECT id, full_name AS name, username, email, role_id, is_active, created_at, last_login_at AS last_login FROM admins WHERE $where ORDER BY created_at DESC", $types, $params);
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="container">
@@ -95,7 +106,7 @@ include __DIR__ . '/../includes/header.php';
               <div style="font-weight:600;"><?= e($u['name']) ?></div>
               <div style="font-size:11px;color:var(--text-muted);"><?= e($u['email']) ?></div>
             </td>
-            <td><span class="badge badge-secondary"><?= e(role_label($u['role'])) ?></span></td>
+            <td><span class="badge badge-secondary"><?= e(role_label((int)$u['role_id'])) ?></span></td>
             <td>
               <?php if ($u['is_active']): ?>
                 <span class="badge badge-success">Active</span>

@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $hash = password_hash($password, PASSWORD_BCRYPT);
         query_exec(
-            'INSERT INTO admins (name, username, email, password, role_id, is_active)
+            'INSERT INTO admins (full_name, username, email, password, role_id, is_active)
              VALUES (?, ?, ?, ?, 3, 1)',
-            'ssssi',
-            [$name, $username, $email, $hash, 3]
+            'ssss',
+            [$name, $username, $email, $hash]
         );
         $success = true;
         $fields  = ['name' => '', 'username' => '', 'email' => ''];

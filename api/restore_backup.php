@@ -63,9 +63,6 @@ $posted_pass = $_POST['password'] ?? '';
 $admin_id    = (int)$_SESSION['admin_id'];
 // Try both table names used in the codebase
 $admin_row = query_one('SELECT id, password FROM admins WHERE id=? LIMIT 1', 'i', [$admin_id]);
-if (!$admin_row) {
-    $admin_row = query_one('SELECT id, password_hash AS password FROM admin_users WHERE id=? LIMIT 1', 'i', [$admin_id]);
-}
 if (!$admin_row || !password_verify($posted_pass, $admin_row['password'])) {
     http_response_code(403);
     echo json_encode(['ok' => false, 'error' => 'Password verification failed.']);

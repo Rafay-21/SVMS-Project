@@ -466,8 +466,8 @@ $total     = (int)($total_row['cnt'] ?? 0);
 $pages     = max(1, (int)ceil($total / $per_page));
 
 $logs = query_all(
-    "SELECT al.*, a.name AS admin_name FROM audit_logs al
-     LEFT JOIN admin_users a ON a.id = al.admin_id
+    "SELECT al.*, a.full_name AS admin_name FROM audit_logs al
+     LEFT JOIN admins a ON a.id = al.admin_id
      WHERE $where ORDER BY al.created_at DESC LIMIT $per_page OFFSET $offset",
     $types, $params
 );
