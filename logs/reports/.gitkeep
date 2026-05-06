@@ -1,0 +1,3 @@
+# This directory stores generated PDF reports.
+# Files are automatically pruned after 30 days by cron_email_queue.php
+# Access is controlled through api/download_report.php (requires authentication).

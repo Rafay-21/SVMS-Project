@@ -1,0 +1,2 @@
+# Deny all direct access to /logs/
+Require all denied

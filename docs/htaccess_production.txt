@@ -1,0 +1,83 @@
+# ── Global Options ────────────────────────────────────────────────────────────
+# SVMS Production .htaccess
+# Install: cp docs/htaccess_production.txt .htaccess
+# Differences from dev .htaccess:
+#   1. HTTPS redirect rule is UNCOMMENTED (redirects all HTTP → HTTPS)
+#   2. HSTS header is UNCOMMENTED (max-age=31536000 with preload)
+# ─────────────────────────────────────────────────────────────────────────────
+Options -Indexes
+ServerSignature Off
+
+# ── Rewrite Engine ────────────────────────────────────────────────────────────
+RewriteEngine On
+
+# Force HTTPS — redirect all plain HTTP requests to HTTPS
+# Remove only if terminating SSL at a load balancer / reverse proxy
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── Block Direct Access to Sensitive Files ────────────────────────────────────
+<FilesMatch "(^config\.php$|^composer\.(json|lock)$|\.env$|\.git)">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(sql|log|sh|bak|swp|orig)$">
+    Require all denied
+</FilesMatch>
+
+# Block sensitive directories
+RewriteRule ^logs(/.*)?$       - [F,L]
+RewriteRule ^scripts(/.*)?$    - [F,L]
+RewriteRule ^includes(/.*)?$   - [F,L]
+RewriteRule ^vendor(/.*)?$     - [F,L]
+RewriteRule ^backups(/.*)?$    - [F,L]
+RewriteRule ^config(/.*)?$     - [F,L]
+RewriteRule ^migrations(/.*)?$ - [F,L]
+
+# Block PHP execution in uploads (belt + suspenders with sub-.htaccess)
+RewriteRule ^assets/uploads/.*\.(php[0-9]?|phtml|phar|shtml)$ - [F,L]
+
+# ── Custom Error Documents ────────────────────────────────────────────────────
+ErrorDocument 404 /svms/404.php
+ErrorDocument 500 /svms/500.php
+ErrorDocument 403 /svms/404.php
+
+# ── Security Headers ──────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    # Prevent MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Clickjacking protection
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Legacy XSS filter
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Feature / Permissions policy
+    Header always set Permissions-Policy "geolocation=(), camera=(self), microphone=(), payment=(), usb=()"
+
+    # HSTS — enforces HTTPS for 1 year; includes subdomains; eligible for preload
+    # Only enable when you are certain HTTPS will remain permanently
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Content Security Policy
+    # Tune the CDN allowlist to match actual external resources used.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self';"
+
+    # Remove server banner
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
+# ── Static Asset Cache Control ────────────────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    <FilesMatch "\.(css|js|svg|png|jpg|jpeg|gif|ico|woff|woff2)$">
+        ExpiresDefault "access plus 30 days"
+        Header set Cache-Control "public, max-age=2592000, immutable"
+    </FilesMatch>
+</IfModule>

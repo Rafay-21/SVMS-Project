@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <!-- Ground -->
+  <ellipse cx="120" cy="160" rx="90" ry="10" fill="#e2e8f0"/>
+  <!-- Box -->
+  <rect x="60" y="80" width="120" height="80" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M60 100 L120 130 L180 100" stroke="#cbd5e1" stroke-width="2" fill="none"/>
+  <line x1="120" y1="80" x2="120" y2="130" stroke="#cbd5e1" stroke-width="2"/>
+  <!-- Question mark -->
+  <circle cx="120" cy="50" r="24" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="120" y="58" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#94a3b8">?</text>
+</svg>

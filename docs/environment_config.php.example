@@ -1,0 +1,212 @@
+<?php
+/**
+ * SVMS Environment Configuration — Example / Template
+ * ======================================================
+ * INSTRUCTIONS:
+ *   1. Copy this file to the project root and rename to config.php
+ *      cp docs/environment_config.php.example config.php
+ *   2. Fill in every value marked CHANGE_ME
+ *   3. Never commit config.php to version control
+ *   4. Keep this example file in VCS as a reference
+ *
+ * Security Notes:
+ *   - Set IS_DEV = false on every production server
+ *   - Generate a unique APP_KEY:  php -r "echo bin2hex(random_bytes(32));"
+ *   - DB_PASS and SMTP_PASS should be strong, randomly generated
+ *   - The ENCRYPTION_KEY is auto-generated in /config/keys.php on first run;
+ *     back up /config/keys.php and keep it secret — losing it means encrypted
+ *     settings (SMTP password) can no longer be decrypted
+ */
+
+// ════════════════════════════════════════════════════════════
+// DATABASE
+// ════════════════════════════════════════════════════════════
+
+// MySQL / MariaDB hostname
+define('DB_HOST', 'localhost');
+
+// MySQL user that owns the svms_db database
+define('DB_USER', 'CHANGE_ME_db_user');
+
+// MySQL password — leave empty ('') only for local dev with no password set
+define('DB_PASS', 'CHANGE_ME_db_password');
+
+// Database name (must already exist — see docs/database_setup.md)
+define('DB_NAME', 'svms_db');
+
+// Connection charset — do not change unless your DB was created with latin1
+define('DB_CHARSET', 'utf8mb4');
+
+
+// ════════════════════════════════════════════════════════════
+// APPLICATION IDENTITY
+// ════════════════════════════════════════════════════════════
+
+// Display name shown in the browser title bar and email headers
+define('SITE_NAME', 'Smart Visitor Management System');
+
+// Absolute base URL **with** trailing slash.
+// Examples:
+//   https://svms.example.com/          (production, installed at root)
+//   http://localhost/svms/             (XAMPP local dev)
+//   https://svms.example.com/svms/     (installed in a sub-directory)
+define('BASE_URL', 'https://CHANGE_ME_your_domain.com/');
+
+// Absolute filesystem path for uploaded visitor photos
+// Must be writable by the web server (chmod 770)
+define('UPLOAD_DIR', __DIR__ . '/assets/uploads/');
+
+// Absolute filesystem path for application logs, rate-limiter buckets, backups
+// Must be writable by the web server (chmod 770)
+define('LOG_DIR', __DIR__ . '/logs');
+
+
+// ════════════════════════════════════════════════════════════
+// SMTP / EMAIL
+// ════════════════════════════════════════════════════════════
+// Tip: Store the real SMTP password here only for initial setup.
+//      After the first login go to Settings → Email and save the
+//      password there — SVMS will encrypt it with AES-256-GCM and
+//      the constant below is no longer read.
+
+// SMTP server hostname (e.g. smtp.sendgrid.net, mail.example.com)
+define('SMTP_HOST', 'CHANGE_ME_smtp_host');
+
+// SMTP username (often same as from-address, or 'apikey' for SendGrid)
+define('SMTP_USER', 'CHANGE_ME_smtp_user');
+
+// SMTP password — will be encrypted on first use via Settings panel
+// Leave empty ('') and configure via Settings → Email after first login
+define('SMTP_PASS', '');
+
+// SMTP port: 587 (STARTTLS, recommended) | 465 (SSL) | 25 (plain, not recommended)
+define('SMTP_PORT', 587);
+
+// Envelope From address (must be an accepted sender for your SMTP provider)
+define('SMTP_FROM_EMAIL', 'no-reply@CHANGE_ME_your_domain.com');
+
+// Display name for outgoing emails
+define('SMTP_FROM_NAME', 'SVMS Notifications');
+
+
+// ════════════════════════════════════════════════════════════
+// SECURITY
+// ════════════════════════════════════════════════════════════
+
+// Set to false on every production server.
+// When IS_DEV = false:
+//   - PHP errors are logged to logs/php_errors.log, NOT displayed
+//   - The custom 500 error page is shown to users
+//   - Session cookie Secure flag is tied to HTTPS detection
+define('IS_DEV', false);
+
+// Application HMAC key — used for session binding and signed tokens.
+// Generate a unique key per deployment:
+//   php -r "echo bin2hex(random_bytes(32));"
+// NEVER share or commit this value.
+define('APP_KEY', 'CHANGE_ME_generate_32_byte_hex_string');
+
+
+// ════════════════════════════════════════════════════════════
+// BUSINESS LOGIC
+// ════════════════════════════════════════════════════════════
+
+// Maximum hours a visitor can remain checked-in before auto-checkout triggers.
+// Recommended: 8 (one business day). Cron: scripts/cron_auto_checkout.php
+define('MAX_VISIT_HOURS', 8);
+
+// Prefix for auto-generated badge numbers (e.g. VIS-250601-A3F2C)
+define('BADGE_PREFIX', 'VIS');
+
+// Idle session lifetime in hours. Users are logged out after this many hours
+// of inactivity. Minimum recommended: 1. Maximum: 8.
+define('SESSION_LIFETIME_HOURS', 2);
+
+// OTP (Two-Factor) code validity in minutes.
+define('OTP_EXPIRY_MINUTES', 10);
+
+// Enable or disable Two-Factor Authentication globally.
+// Individual users can still opt in/out via their Profile page.
+define('ENABLE_2FA', true);
+
+// Default UI language code. Supported: 'en' (English), 'ur' (Urdu)
+define('DEFAULT_LANG', 'en');
+
+// Default colour theme. Supported: 'light', 'dark', 'system'
+define('DEFAULT_THEME', 'light');
+
+
+// ════════════════════════════════════════════════════════════
+// TIMEZONE
+// ════════════════════════════════════════════════════════════
+// Full list: https://www.php.net/manual/en/timezones.php
+// Change to match your server/organisation timezone.
+date_default_timezone_set('Asia/Karachi');
+
+
+// ════════════════════════════════════════════════════════════
+// DO NOT EDIT BELOW THIS LINE
+// (Bootstrap code — identical to the shipped config.php)
+// ════════════════════════════════════════════════════════════
+
+// Error reporting
+error_reporting(E_ALL);
+if (IS_DEV) {
+    ini_set('display_errors', '1');
+} else {
+    ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
+    ini_set('error_log', LOG_DIR . '/php_errors.log');
+}
+
+// Encryption key — auto-generated on first run; stored outside web root
+$_svms_keys_file = __DIR__ . '/config/keys.php';
+if (!file_exists($_svms_keys_file)) {
+    if (!is_dir(dirname($_svms_keys_file))) mkdir(dirname($_svms_keys_file), 0700, true);
+    $_svms_enc_key = bin2hex(random_bytes(32));
+    file_put_contents(
+        $_svms_keys_file,
+        "<?php\n// Auto-generated — DO NOT commit this file.\n" .
+        "define('ENCRYPTION_KEY', '{$_svms_enc_key}');\n"
+    );
+    @chmod($_svms_keys_file, 0600);
+    unset($_svms_enc_key);
+}
+require_once $_svms_keys_file;
+unset($_svms_keys_file);
+
+// Ensure log & upload directories exist
+if (!is_dir(LOG_DIR)) mkdir(LOG_DIR, 0750, true);
+if (!is_dir(UPLOAD_DIR)) mkdir(UPLOAD_DIR, 0750, true);
+
+// Session — start before any output
+$_svms_is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+               || (($_SERVER['SERVER_PORT'] ?? 80) == 443);
+session_name('SVMS_SESSID');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => parse_url(BASE_URL, PHP_URL_PATH) ?: '/',
+    'secure'   => $_svms_is_https,
+    'httponly' => true,
+    'samesite' => 'Strict',
+]);
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+// Database connection
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+$conn->set_charset(DB_CHARSET);
+if ($conn->connect_error) {
+    error_log('DB connect error: ' . $conn->connect_error);
+    if (!IS_DEV) { http_response_code(500); include __DIR__ . '/500.php'; exit; }
+    die('Database connection failed: ' . $conn->connect_error);
+}
+
+// Core helpers
+require_once __DIR__ . '/includes/db_functions.php';
+require_once __DIR__ . '/includes/flash.php';
+require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/rbac.php';
+require_once __DIR__ . '/includes/rate_limiter.php';
+require_once __DIR__ . '/includes/crypto.php';
+require_once __DIR__ . '/includes/error_handler.php';
+require_once __DIR__ . '/includes/i18n.php';

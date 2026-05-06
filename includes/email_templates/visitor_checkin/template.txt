@@ -1,0 +1,21 @@
+{{site_name}} — You're Checked In!
+====================================
+
+Hello {{visitor_name}},
+
+Your visit has been registered at {{site_name}}.
+
+VISIT DETAILS
+-------------
+Badge No.:  {{badge_number}}
+Meeting:    {{person_to_meet}}
+Purpose:    {{purpose}}
+Check-in:   {{check_in_time}}
+Department: {{department}}
+
+Please keep your badge handy. When leaving, check out at the reception desk or kiosk.
+
+Thank you for visiting {{site_name}}.
+
+---
+© {{year}} {{site_name}} · Automated message, do not reply.

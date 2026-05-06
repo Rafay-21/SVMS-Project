@@ -1,0 +1,246 @@
+/* ============================================================
+   tokens.css — SVMS Design Tokens v2.0
+   All CSS custom properties for the design system.
+   ============================================================ */
+
+:root {
+  /* ── Brand Palette ─────────────────────────────────────── */
+  --primary:          #1a3c5e;
+  --primary-light:    #254d77;
+  --primary-dark:     #122b44;
+  --secondary:        #2e75b6;
+  --secondary-light:  #4a8fcb;
+  --accent:           #00b4d8;
+  --accent-dark:      #0097b8;
+
+  /* ── Semantic Colours ──────────────────────────────────── */
+  --success:          #22c55e;
+  --success-bg:       #f0fdf4;
+  --success-border:   #86efac;
+  --warning:          #f59e0b;
+  --warning-bg:       #fffbeb;
+  --warning-border:   #fcd34d;
+  --danger:           #ef4444;
+  --danger-bg:        #fef2f2;
+  --danger-border:    #fca5a5;
+  --info:             #3b82f6;
+  --info-bg:          #eff6ff;
+  --info-border:      #93c5fd;
+
+  /* ── Neutral / Surface ─────────────────────────────────── */
+  --bg:               #f8fafc;
+  --bg-alt:           #f1f5f9;
+  --card:             #ffffff;
+  --card-alt:         #f8fafc;
+  --text:             #1e293b;
+  --text-muted:       #64748b;
+  --text-faint:       #94a3b8;
+  --border:           #e2e8f0;
+  --border-dark:      #cbd5e1;
+  --divider:          #f1f5f9;
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-xs:        0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm:        0 2px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:        0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
+  --shadow-lg:        0 10px 30px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  --shadow-xl:        0 20px 50px rgba(0,0,0,.15);
+
+  /* ── Border Radius ─────────────────────────────────────── */
+  --radius-xs:        4px;
+  --radius-sm:        8px;
+  --radius-md:        12px;
+  --radius-lg:        16px;
+  --radius-xl:        24px;
+  --radius-full:      9999px;
+
+  /* ── Spacing Scale ─────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Typography ────────────────────────────────────────── */
+  --font-base:        'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:        'Fira Code', 'Cascadia Code', Consolas, monospace;
+  --font-urdu:        'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
+
+  --text-xs:   11px;
+  --text-sm:   12px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   16px;
+  --text-xl:   18px;
+  --text-2xl:  22px;
+  --text-3xl:  28px;
+  --text-4xl:  36px;
+
+  --font-light:    300;
+  --font-normal:   400;
+  --font-medium:   500;
+  --font-semibold: 600;
+  --font-bold:     700;
+
+  --leading-tight:  1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.75;
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --transition:        all 0.2s ease;
+  --transition-fast:   all 0.1s ease;
+  --transition-slow:   all 0.35s ease;
+  --transition-bounce: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --navbar-height:  64px;
+  --sidebar-width:  250px;
+
+  /* ── Z-Index ───────────────────────────────────────────── */
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 50;
+  --z-sidebar:  90;
+  --z-navbar:  100;
+  --z-modal:   200;
+  --z-toast:   300;
+  --z-tooltip: 400;
+
+  /* ── Chart Colours ─────────────────────────────────────── */
+  --chart-1: #2e75b6;
+  --chart-2: #00b4d8;
+  --chart-3: #22c55e;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
+  --chart-6: #8b5cf6;
+}
+
+/* ── Dark Mode Token Overrides ────────────────────────────── */
+[data-theme="dark"] {
+  /* Surfaces */
+  --bg:               #0F1419;
+  --bg-alt:           #161D26;
+  --card:             #1A2027;
+  --card-alt:         #1F2731;
+
+  /* Text */
+  --text:             #E5E7EB;
+  --text-muted:       #9CA3AF;
+  --text-faint:       #6B7280;
+
+  /* Borders */
+  --border:           rgba(255,255,255,0.08);
+  --border-dark:      rgba(255,255,255,0.14);
+  --divider:          rgba(255,255,255,0.05);
+
+  /* Brand — slightly lighter for dark-bg contrast */
+  --primary:          #3B82F6;
+  --primary-light:    #60A5FA;
+  --primary-dark:     #2563EB;
+  --secondary:        #60A5FA;
+  --secondary-light:  #93C5FD;
+  --accent:           #38BDF8;
+  --accent-dark:      #0EA5E9;
+
+  /* Semantic backgrounds */
+  --success-bg:       rgba(34,197,94,0.12);
+  --success-border:   rgba(34,197,94,0.25);
+  --warning-bg:       rgba(245,158,11,0.12);
+  --warning-border:   rgba(245,158,11,0.25);
+  --danger-bg:        rgba(239,68,68,0.12);
+  --danger-border:    rgba(239,68,68,0.25);
+  --info-bg:          rgba(59,130,246,0.12);
+  --info-border:      rgba(59,130,246,0.25);
+
+  /* Soft-bg for highlights */
+  --soft-bg:          rgba(59,130,246,0.08);
+
+  /* Shadows — more opaque on dark */
+  --shadow-xs:        0 1px 2px rgba(0,0,0,.35);
+  --shadow-sm:        0 2px 4px rgba(0,0,0,.40), 0 1px 2px rgba(0,0,0,.25);
+  --shadow-md:        0 4px 12px rgba(0,0,0,.50), 0 2px 4px rgba(0,0,0,.30);
+  --shadow-lg:        0 10px 30px rgba(0,0,0,.60), 0 4px 8px rgba(0,0,0,.35);
+  --shadow-xl:        0 20px 50px rgba(0,0,0,.70);
+
+  /* Chart colours — slightly brighter for dark bg */
+  --chart-1: #60A5FA;
+  --chart-2: #38BDF8;
+  --chart-3: #34D399;
+  --chart-4: #FBBF24;
+  --chart-5: #F87171;
+  --chart-6: #A78BFA;
+}
+
+/* ── Suppress all transitions during initial paint ─────────── */
+/* Applied by theme.js before DOM paint; removed after load    */
+html.preload,
+html.preload *,
+html.preload *::before,
+html.preload *::after {
+  transition: none !important;
+  animation-duration: 0ms !important;
+}
+}
+
+/* ── Dark Theme ─────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --primary:          #1e4a7a;
+  --primary-light:    #265e9a;
+  --primary-dark:     #152e4d;
+  --secondary:        #4a8fcb;
+  --accent:           #00c8f0;
+
+  --bg:               #0f172a;
+  --bg-alt:           #1e293b;
+  --card:             #1e293b;
+  --card-alt:         #263244;
+  --text:             #e2e8f0;
+  --text-muted:       #94a3b8;
+  --text-faint:       #64748b;
+  --border:           #334155;
+  --border-dark:      #475569;
+  --divider:          #1e293b;
+
+  --success-bg:       #052e16;
+  --success-border:   #166534;
+  --warning-bg:       #1c1408;
+  --warning-border:   #854d0e;
+  --danger-bg:        #1c0a0a;
+  --danger-border:    #991b1b;
+  --info-bg:          #0c1a3a;
+  --info-border:      #1d4ed8;
+
+  --shadow-md:        0 4px 12px rgba(0,0,0,.4);
+  --shadow-lg:        0 10px 30px rgba(0,0,0,.5);
+
+  --chart-1: #4a8fcb;
+  --chart-2: #00c8f0;
+  --chart-3: #4ade80;
+  --chart-4: #fbbf24;
+  --chart-5: #f87171;
+  --chart-6: #a78bfa;
+}
+
+/* ── Auto dark if user has no explicit preference ──────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg:               #0f172a;
+    --bg-alt:           #1e293b;
+    --card:             #1e293b;
+    --card-alt:         #263244;
+    --text:             #e2e8f0;
+    --text-muted:       #94a3b8;
+    --text-faint:       #64748b;
+    --border:           #334155;
+    --border-dark:      #475569;
+    --divider:          #1e293b;
+    --primary:          #1e4a7a;
+    --secondary:        #4a8fcb;
+    --accent:           #00c8f0;
+  }
+}

@@ -1,0 +1,20 @@
+{{site_name}} — Appointment Confirmed
+======================================
+
+Hello {{visitor_name}},
+
+Your appointment at {{site_name}} is confirmed.
+
+APPOINTMENT DETAILS
+-------------------
+Date & Time:  {{scheduled_at}}
+Meeting:      {{host_name}}
+Purpose:      {{purpose}}
+Department:   {{department}}
+
+A QR e-Pass is attached to this email. Present it at reception for fast check-in.
+
+If you need to reschedule, please contact reception at least 2 hours in advance.
+
+---
+© {{year}} {{site_name}} · Automated message, do not reply.

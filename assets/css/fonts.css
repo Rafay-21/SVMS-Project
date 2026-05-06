@@ -1,0 +1,58 @@
+/* ============================================================
+   fonts.css — Local @font-face declarations
+   Noto Nastaliq Urdu is hosted locally to avoid runtime CDN
+   dependency. Font files go in assets/fonts/NotoNastaliqUrdu/.
+   
+   Download from: https://fonts.google.com/noto/specimen/Noto+Nastaliq+Urdu
+   Place the .ttf files at the paths below.
+   ============================================================ */
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: local('Noto Nastaliq Urdu'),
+       url('../fonts/NotoNastaliqUrdu/NotoNastaliqUrdu-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style:  normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: local('Noto Nastaliq Urdu Medium'),
+       url('../fonts/NotoNastaliqUrdu/NotoNastaliqUrdu-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style:  normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: local('Noto Nastaliq Urdu SemiBold'),
+       url('../fonts/NotoNastaliqUrdu/NotoNastaliqUrdu-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style:  normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: local('Noto Nastaliq Urdu Bold'),
+       url('../fonts/NotoNastaliqUrdu/NotoNastaliqUrdu-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style:  normal;
+  font-display: swap;
+}
+
+/* ── Inter (Latin UI font) — loaded from Google CDN in header.php ── */
+/* If you want to host Inter locally, place the variable font at:
+   assets/fonts/Inter/Inter.var.woff2
+   and uncomment the @font-face below.
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter/Inter.var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+*/

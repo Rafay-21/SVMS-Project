@@ -1,0 +1,23 @@
+{{site_name}} — Thanks for Visiting!
+======================================
+
+Hello {{visitor_name}},
+
+You have been successfully checked out of {{site_name}}.
+
+VISIT SUMMARY
+-------------
+Badge:      {{badge_number}}
+Check-in:   {{check_in_time}}
+Check-out:  {{check_out_time}}
+Duration:   {{duration}}
+
+{{#if feedback_url}}
+How was your visit? Leave feedback at:
+{{feedback_url}}
+{{/if}}
+
+Thank you for visiting. We hope to see you again!
+
+---
+© {{year}} {{site_name}} · Automated message, do not reply.

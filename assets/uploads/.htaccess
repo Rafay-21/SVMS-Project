@@ -1,0 +1,17 @@
+# Prevent PHP execution in the uploads directory
+# Belt-and-suspenders with root .htaccess RewriteRule
+
+Options -Indexes -ExecCGI
+php_flag engine off
+
+# Deny any PHP-like file
+<FilesMatch "\.(php[0-9]?|phtml|phar|shtml|cgi|pl|py|asp|aspx|jsp)$">
+    Require all denied
+</FilesMatch>
+
+# Force all files to be served as binary/octet-stream
+# (prevents the browser from executing HTML/JS uploaded as an image)
+<IfModule mod_headers.c>
+    Header set Content-Disposition "attachment"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

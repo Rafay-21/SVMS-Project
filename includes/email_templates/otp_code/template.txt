@@ -1,0 +1,16 @@
+{{site_name}} — Security Verification Code
+==========================================
+
+Hello {{admin_name}},
+
+Use the code below to complete your sign-in.
+This code expires in {{expiry_minutes}} minutes.
+
+  CODE: {{otp_code}}
+
+If you did not attempt to sign in, ignore this email.
+SVMS will never ask you to share this code by phone, email, or chat.
+
+---
+Sent to {{admin_email}} on {{sent_at}}
+© {{year}} {{site_name}}

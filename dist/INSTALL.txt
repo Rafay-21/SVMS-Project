@@ -1,0 +1,80 @@
+========================================
+ Smart Visitor Management System (SVMS)
+ Quick Install Guide — v2.0
+========================================
+
+REQUIREMENTS
+------------
+  - PHP 8.1+ with extensions: mysqli, gd, mbstring, zlib, openssl
+  - MySQL 8.0+ or MariaDB 10.6+
+  - Apache 2.4+ with mod_rewrite, mod_headers, mod_ssl
+  - Composer (for PDF generation)
+
+STEPS
+-----
+1. Copy all files to your web root:
+     cp -r svms/ /var/www/html/svms/
+
+2. Create the database:
+     mysql -u root -p
+     > CREATE DATABASE svms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+     > CREATE USER 'svms_user'@'localhost' IDENTIFIED BY 'strong_password';
+     > GRANT ALL PRIVILEGES ON svms_db.* TO 'svms_user'@'localhost';
+     > FLUSH PRIVILEGES;
+     > EXIT;
+
+3. Import schema:
+     mysql -u svms_user -p svms_db < docs/database_setup.sql
+
+4. (Optional) Import demo data:
+     mysql -u svms_user -p svms_db < docs/seed.sql
+
+5. Configure the application:
+     cp docs/environment_config.php.example config.php
+     Edit config.php — set:
+       DB_USER, DB_PASS, DB_NAME
+       BASE_URL  (e.g. https://svms.your-org.com/)
+       SMTP settings (host, port, user, password, from address)
+
+6. Install PHP dependencies:
+     cd /var/www/html/svms
+     composer install --no-dev
+
+7. Set file permissions:
+     chown -R www-data:www-data /var/www/html/svms/
+     chmod 770 logs/ assets/uploads/
+     chmod 600 config/keys.php   (auto-created on first page load)
+
+8. Enable Apache virtualhost (see docs/deployment_checklist.md).
+
+9. Set up cron jobs (edit with: crontab -e):
+     */5 * * * *  php /var/www/html/svms/scripts/cron_email_queue.php
+     0   * * * *  php /var/www/html/svms/scripts/cron_appointment_reminders.php
+     */30 * * * * php /var/www/html/svms/scripts/cron_appointment_no_show.php
+     0   * * * *  php /var/www/html/svms/scripts/cron_auto_checkout.php
+     0   3 * * *  php /var/www/html/svms/scripts/cron_daily_backup.php
+     0   7 * * *  php /var/www/html/svms/scripts/cron_daily_digest.php
+
+10. Open your browser:
+      https://svms.your-org.com/
+      Login: admin / Admin@1234!
+      CHANGE THIS PASSWORD IMMEDIATELY.
+
+PRODUCTION CHECKLIST
+--------------------
+  [ ] HTTPS enabled and HSTS active
+  [ ] Default password changed
+  [ ] SMTP configured and tested
+  [ ] IS_DEV = false in config.php
+  [ ] Copy docs/htaccess_production.txt to .htaccess
+  [ ] Cron jobs verified (crontab -l)
+  [ ] First backup created from Settings > Backup
+
+MORE DOCUMENTATION
+------------------
+  docs/deployment_checklist.md   — full deployment guide
+  docs/user_manual.md            — end-user operations manual
+  docs/technical_reference.md    — developer reference
+  CHANGELOG.md                   — version history
+
+========================================

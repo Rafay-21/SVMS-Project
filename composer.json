@@ -1,0 +1,17 @@
+{
+    "name": "svms/svms",
+    "description": "Smart Visitor Management System",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "tecnickcom/tcpdf": "^6.7"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "SVMS\\": "includes/"
+        }
+    }
+}

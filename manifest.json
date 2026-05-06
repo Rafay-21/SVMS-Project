@@ -1,0 +1,90 @@
+{
+  "name": "Smart Visitor Management System",
+  "short_name": "SVMS",
+  "description": "Enterprise-grade visitor management — check visitors in/out, manage appointments, and view analytics from your home screen.",
+  "start_url": "/svms/pages/dashboard.php",
+  "scope": "/svms/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1B3A5C",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/svms/assets/img/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/svms/assets/img/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/svms/assets/img/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/svms/assets/img/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/svms/assets/img/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Check-In",
+      "short_name": "Check-In",
+      "description": "Check a visitor in or out",
+      "url": "/svms/pages/checkin_checkout.php",
+      "icons": [
+        {
+          "src": "/svms/assets/img/icons/shortcut-checkin.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "New Visitor",
+      "short_name": "Register",
+      "description": "Register a new visitor",
+      "url": "/svms/pages/register_visitor.php",
+      "icons": [
+        {
+          "src": "/svms/assets/img/icons/shortcut-register.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "short_name": "Alerts",
+      "description": "View system notifications",
+      "url": "/svms/pages/notifications.php",
+      "icons": [
+        {
+          "src": "/svms/assets/img/icons/shortcut-notifications.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

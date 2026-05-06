@@ -1,0 +1,19 @@
+{{site_name}} — Daily Digest ({{report_date}})
+===============================================
+
+Here's what happened today:
+
+STATS
+-----
+Total Visits:     {{total_visits}}
+Still Checked In: {{checked_in}}
+Appointments:     {{appointments}}
+Blocked Attempts: {{blocked_attempts}}
+
+Peak Hour: {{peak_hour}} ({{peak_count}} visitors)
+
+View full analytics: {{dashboard_url}}
+
+---
+Daily digest sent to Super Administrators only.
+© {{year}} {{site_name}} · Automated digest, do not reply.

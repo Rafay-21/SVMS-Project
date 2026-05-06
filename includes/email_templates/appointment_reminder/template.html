@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Appointment Reminder — {{site_name}}</title>
+<style>body,table,td,a{-webkit-text-size-adjust:100%;}body{margin:0;padding:0;background:#f0f4f8;}
+@media(max-width:620px){.wrapper{width:100%!important;padding:16px!important;}}</style>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background:#f0f4f8;">
+<tr><td align="center" style="padding:40px 16px;">
+<table class="wrapper" role="presentation" border="0" cellpadding="0" cellspacing="0"
+       style="width:600px;max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.10);">
+  <tr>
+    <td style="background:linear-gradient(135deg,#1a3c5e 0%,#0d2137 100%);padding:28px 40px;text-align:center;">
+      <div style="display:inline-block;background:rgba(255,255,255,.15);border-radius:50%;width:50px;height:50px;line-height:50px;font-size:26px;color:#fff;font-weight:700;">S</div>
+      <h1 style="margin:10px 0 0;color:#fff;font-size:20px;font-weight:700;">{{site_name}}</h1>
+      <p style="margin:4px 0 0;color:rgba(255,255,255,.65);font-size:12px;">Appointment Reminder</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#fef3c7;padding:16px 40px;border-bottom:3px solid #f59e0b;">
+      <p style="margin:0;font-size:15px;font-weight:600;color:#92400e;">⏰ Reminder: Your appointment is today</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:32px 40px 24px;">
+      <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.6;">
+        Hello <strong>{{visitor_name}}</strong>, this is a reminder about your appointment at
+        <strong>{{site_name}}</strong> today.
+      </p>
+
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
+             style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:24px;">
+        <tr><td style="padding:20px 24px;">
+          <table role="presentation" border="0" cellpadding="5" cellspacing="0">
+            <tr><td style="font-size:13px;color:#6b7280;width:130px;">Time</td><td style="font-size:14px;font-weight:700;color:#1a2942;">{{scheduled_time}}</td></tr>
+            <tr><td style="font-size:13px;color:#6b7280;">Meeting</td><td style="font-size:13px;color:#1a2942;">{{host_name}}</td></tr>
+            <tr><td style="font-size:13px;color:#6b7280;">Purpose</td><td style="font-size:13px;color:#1a2942;">{{purpose}}</td></tr>
+            {{#if department}}<tr><td style="font-size:13px;color:#6b7280;">Department</td><td style="font-size:13px;color:#1a2942;">{{department}}</td></tr>{{/if}}
+          </table>
+        </td></tr>
+      </table>
+
+      <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">
+        Please arrive a few minutes early and present your QR e-Pass (attached to your confirmation email) at reception.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#f8fafc;padding:20px 40px;border-top:1px solid #e2e8f0;text-align:center;">
+      <p style="margin:0;font-size:12px;color:#9ca3af;">© {{year}} {{site_name}} · Automated reminder, do not reply.</p>
+    </td>
+  </tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

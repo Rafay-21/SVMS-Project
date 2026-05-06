@@ -1,0 +1,18 @@
+{{site_name}} — Appointment Reminder (Today)
+============================================
+
+Hello {{visitor_name}},
+
+This is a reminder about your appointment at {{site_name}} today.
+
+TODAY'S APPOINTMENT
+-------------------
+Time:         {{scheduled_time}}
+Meeting:      {{host_name}}
+Purpose:      {{purpose}}
+Department:   {{department}}
+
+Please arrive a few minutes early and present your QR e-Pass at reception.
+
+---
+© {{year}} {{site_name}} · Automated reminder, do not reply.

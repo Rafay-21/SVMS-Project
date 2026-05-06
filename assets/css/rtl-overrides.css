@@ -1,0 +1,278 @@
+/* ============================================================
+   rtl-overrides.css — Right-to-Left (Urdu) Layout Overrides
+   Only loaded when dir="rtl". Most layout uses CSS logical
+   properties (margin-inline-start etc.) and flips automatically.
+   This file handles the remaining direction-specific cases.
+   ============================================================ */
+
+/* ── Typography ─────────────────────────────────────────────── */
+[dir="rtl"] body,
+[dir="rtl"] .sidebar,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  font-family: var(--font-urdu), 'Segoe UI', sans-serif;
+  line-height: 2;
+}
+
+/* Isolate numeric / LTR content so numbers stay readable */
+[dir="rtl"] .bdo-ltr,
+[dir="rtl"] .badge-number,
+[dir="rtl"] .visit-id,
+[dir="rtl"] .cnic-value,
+[dir="rtl"] td.numeric,
+[dir="rtl"] .chart-tick {
+  unicode-bidi: isolate;
+  direction: ltr;
+  display: inline-block;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+[dir="rtl"] .sidebar {
+  left:  auto;
+  right: 0;
+  /* Mobile: slides in from right */
+  transform: translateX(100%);
+}
+
+[dir="rtl"] body.sidebar-open .sidebar {
+  transform: translateX(0);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  [dir="rtl"] .sidebar {
+    transform: none;
+  }
+  [dir="rtl"] .main {
+    margin-left:  0;
+    margin-right: var(--sidebar-width);
+  }
+}
+
+/* ── Sidebar links ───────────────────────────────────────────── */
+[dir="rtl"] .sidebar-link {
+  flex-direction: row-reverse;
+  border-left:  none;
+  border-right: 3px solid transparent;
+  padding: 10px 18px 10px 10px;
+}
+
+[dir="rtl"] .sidebar-link.active,
+[dir="rtl"] .sidebar-link:hover {
+  border-left-color:  transparent;
+  border-right-color: var(--accent);
+}
+
+[dir="rtl"] .sidebar-badge {
+  margin-left:  0;
+  margin-right: auto;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────── */
+[dir="rtl"] .navbar {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .navbar-actions {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .navbar-search .search-icon {
+  left:  auto;
+  right: 14px;
+}
+
+[dir="rtl"] .navbar-search input {
+  padding-left:  14px;
+  padding-right: 42px;
+}
+
+[dir="rtl"] .navbar-dropdown-menu {
+  left:  auto;
+  right: 0;
+  text-align: right;
+}
+
+/* ── Directional icon flips ──────────────────────────────────── */
+[dir="rtl"] .bi-chevron-right::before { content: "\f284"; }  /* bi-chevron-left  */
+[dir="rtl"] .bi-chevron-left::before  { content: "\f285"; }  /* bi-chevron-right */
+[dir="rtl"] .bi-arrow-right::before   { content: "\f12f"; }  /* bi-arrow-left    */
+[dir="rtl"] .bi-arrow-left::before    { content: "\f138"; }  /* bi-arrow-right   */
+[dir="rtl"] .bi-box-arrow-right::before { content: "\f13d"; }/* bi-box-arrow-left */
+[dir="rtl"] .bi-skip-forward::before  { content: "\f519"; }  /* bi-skip-backward */
+
+/* ── Cards & containers ──────────────────────────────────────── */
+[dir="rtl"] .stat-card,
+[dir="rtl"] .card {
+  text-align: right;
+}
+
+[dir="rtl"] .stat-card-icon {
+  margin-left:  0;
+  margin-right: auto;
+  order: 1;
+}
+
+[dir="rtl"] .stat-card-content {
+  text-align: right;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+[dir="rtl"] table {
+  text-align: right;
+}
+
+[dir="rtl"] th,
+[dir="rtl"] td {
+  text-align: right;
+}
+
+[dir="rtl"] th:first-child,
+[dir="rtl"] td:first-child {
+  text-align: right;
+}
+
+[dir="rtl"] .table-actions {
+  text-align: left;
+}
+
+/* ── Forms ───────────────────────────────────────────────────── */
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+[dir="rtl"] .input-lead-icon {
+  left:  auto;
+  right: 14px;
+}
+
+[dir="rtl"] .input-wrap input,
+[dir="rtl"] .input-wrap select {
+  padding-left:  44px;
+  padding-right: 44px;
+}
+
+[dir="rtl"] .input-trail-icon,
+[dir="rtl"] .pass-toggle {
+  left:  14px;
+  right: auto;
+}
+
+[dir="rtl"] .form-check {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+[dir="rtl"] select.form-control {
+  background-position: left 12px center;
+  padding-right: 14px;
+  padding-left:  40px;
+}
+
+/* ── Modals ──────────────────────────────────────────────────── */
+[dir="rtl"] .modal-header,
+[dir="rtl"] .modal-body,
+[dir="rtl"] .modal-footer {
+  text-align: right;
+}
+
+[dir="rtl"] .modal-close {
+  right: auto;
+  left:  16px;
+}
+
+/* ── Toasts ──────────────────────────────────────────────────── */
+[dir="rtl"] #toast-container {
+  left:  24px;
+  right: auto;
+}
+
+[dir="rtl"] .toast {
+  flex-direction: row-reverse;
+}
+
+/* ── Notification panel ──────────────────────────────────────── */
+[dir="rtl"] #notification-panel {
+  right: auto;
+  left: 0;
+}
+
+[dir="rtl"] #notification-panel::before,
+[dir="rtl"] #notification-panel::after {
+  right: auto;
+  left: 14px;
+}
+
+[dir="rtl"] .notif-item {
+  border-left:  none;
+  border-right: 4px solid transparent;
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .notif-item.unread {
+  border-right-color: var(--secondary);
+}
+
+[dir="rtl"] .notif-time {
+  margin-left:  0;
+  margin-right: 8px;
+}
+
+/* ── Badges & pills ──────────────────────────────────────────── */
+[dir="rtl"] .badge {
+  direction: ltr;           /* keep status badge text LTR */
+}
+
+/* ── Flash messages ──────────────────────────────────────────── */
+[dir="rtl"] .flash-message {
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+/* ── Dropdowns ───────────────────────────────────────────────── */
+[dir="rtl"] .dropdown-item,
+[dir="rtl"] .navbar-dropdown-item {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir="rtl"] .dropdown-item i,
+[dir="rtl"] .navbar-dropdown-item i {
+  margin-left:  0;
+  margin-right: 0;
+  margin-inline-start: 10px;
+}
+
+/* ── Page headers ────────────────────────────────────────────── */
+[dir="rtl"] #page-header-actions {
+  flex-direction: row-reverse;
+}
+
+/* ── Analytics / charts ──────────────────────────────────────── */
+[dir="rtl"] .an-kpi-grid {
+  direction: ltr;   /* KPI numbers must stay LTR */
+}
+
+[dir="rtl"] .preset-group {
+  flex-direction: row-reverse;
+}
+
+/* ── Kiosk ───────────────────────────────────────────────────── */
+[dir="rtl"] .kiosk-btn-group {
+  flex-direction: row-reverse;
+}
+
+/* ── Auth split screen ───────────────────────────────────────── */
+[dir="rtl"] .auth-split {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .auth-features li {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .auth-features {
+  text-align: right;
+}

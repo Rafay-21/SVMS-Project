@@ -1,0 +1,24 @@
+# Secrets — never commit
+config/keys.php
+
+# Logs
+logs/*.log
+logs/*.txt
+
+# Uploads (user content)
+assets/uploads/*
+!assets/uploads/.gitkeep
+
+# Composer vendor directory
+vendor/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# XAMPP junction artefacts
+desktop.ini

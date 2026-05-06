@@ -1,0 +1,116 @@
+/* ============================================================
+   themes.css — Theme Transitions & Overrides
+   Handles smooth transitions and chart token mappings.
+   ============================================================ */
+
+/* ── Smooth transition when theme attribute changes ─────────── */
+html[data-theme],
+html[data-theme] *,
+html[data-theme] *::before,
+html[data-theme] *::after {
+  transition:
+    background-color 200ms ease,
+    border-color     200ms ease,
+    color            200ms ease,
+    box-shadow       200ms ease,
+    fill             200ms ease,
+    stroke           200ms ease;
+}
+
+/* Exclude animations and transforms from the blanket transition */
+html[data-theme] .btn:hover,
+html[data-theme] .stat-card:hover,
+html[data-theme] .quick-action-btn:hover,
+html[data-theme] .kiosk-btn:hover {
+  transition: var(--transition-bounce);
+}
+
+/* ── Dark theme explicit overrides ──────────────────────────── */
+[data-theme="dark"] .card,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .modal,
+[data-theme="dark"] .dropdown-menu,
+[data-theme="dark"] .navbar-dropdown-menu,
+[data-theme="dark"] .toast {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .table th {
+  background: #263244;
+}
+
+[data-theme="dark"] .table tbody tr:hover {
+  background: #263244;
+}
+
+[data-theme="dark"] select.form-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] .navbar-search input {
+  color: #fff;
+}
+
+[data-theme="dark"] .sidebar {
+  background: var(--primary);
+}
+
+[data-theme="dark"] .file-upload {
+  background: var(--bg-alt);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, var(--bg-alt) 25%, #334155 50%, var(--bg-alt) 75%);
+  background-size: 200% 100%;
+}
+
+/* ── Chart Colour Token Access via CSS ───────────────────────── */
+/* These classes allow JS to read chart colours from tokens */
+.chart-color-1 { color: var(--chart-1); }
+.chart-color-2 { color: var(--chart-2); }
+.chart-color-3 { color: var(--chart-3); }
+.chart-color-4 { color: var(--chart-4); }
+.chart-color-5 { color: var(--chart-5); }
+.chart-color-6 { color: var(--chart-6); }
+
+/* RTL overrides are in rtl-overrides.css (loaded conditionally by header.php) */
+
+/* ── High Contrast Media Query ───────────────────────────────── */
+@media (forced-colors: active) {
+  .btn,
+  .form-control,
+  .card {
+    forced-color-adjust: auto;
+  }
+}
+
+/* ── Print Styles ────────────────────────────────────────────── */
+@media print {
+  .navbar,
+  .sidebar,
+  .sidebar-backdrop,
+  #toast-container,
+  .btn-secondary,
+  .btn-ghost,
+  .page-header .btn {
+    display: none !important;
+  }
+
+  .main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
