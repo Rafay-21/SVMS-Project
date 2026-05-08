@@ -4,6 +4,8 @@
 
 A full-featured, self-hosted visitor management system built with PHP 8+ and MySQL — no cloud subscription required.
 
+> **Prototype mode:** the root experience now runs as a polished in-memory demo. Register and login happen only in the current browser session, and a refresh returns you to the login screen with no persisted auth state.
+
 ![PHP 8.1+](https://img.shields.io/badge/PHP-8.1%2B-blue?logo=php)
 ![MySQL 8.0+](https://img.shields.io/badge/MySQL-8.0%2B-orange?logo=mysql)
 ![Apache 2.4+](https://img.shields.io/badge/Apache-2.4%2B-red?logo=apache)
@@ -72,11 +74,16 @@ chown -R www-data:www-data /var/www/html/svms/
 
 ---
 
-## Default Credentials
+## Demo Credentials
 
-> **Login:** `admin` / `Admin@1234!`
->
-> **Change this password immediately after first login.**
+The prototype ships with seeded in-memory demo accounts for presentation:
+
+- `admin@demo.local` / `Admin@123`
+- `reception@demo.local` / `Frontdesk2026!`
+- `security@demo.local` / `Guard2026!`
+- `ops@demo.local` / `Ops2026!`
+
+You can also register a new user during the session and sign in with that account before refreshing the page.
 
 ---
 
