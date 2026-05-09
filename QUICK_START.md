@@ -11,6 +11,8 @@ python3 -m http.server 4175
 ### Step 2: Open in Browser
 Navigate to: **http://localhost:4175/preview.html**
 
+> Note: The demo now persists state in your browser `localStorage` for convenience — refresh to keep data between reloads. Use `Logout` to clear the persisted demo session.
+
 ### Step 3: Login with Demo Credentials
 
 Choose any of these 4 accounts:

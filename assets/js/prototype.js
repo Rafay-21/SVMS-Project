@@ -1,21 +1,23 @@
 (function () {
+  // ENHANCED ROLE DEFINITIONS WITH ADVANCED FEATURES AND ANALYTICS
   const roleDefinitions = {
     admin: {
       label: 'Admin',
-      title: 'Executive control center',
-      subtitle: 'Monitor the platform, approve users, and keep operations secure.',
+      title: 'Executive Control Center',
+      subtitle: 'Monitor the platform, approve users, manage security policies, and maintain operational excellence.',
       icon: 'bi-shield-lock-fill',
       accent: 'primary',
       stats: [
-        { label: 'Visitors today', value: 148, caption: '+18% since yesterday', icon: 'bi-people-fill', tone: 'primary' },
-        { label: 'Pending approvals', value: 12, caption: 'Access requests waiting', icon: 'bi-person-check-fill', tone: 'warning' },
-        { label: 'Security alerts', value: 2, caption: 'Needs review now', icon: 'bi-exclamation-triangle-fill', tone: 'success' },
-        { label: 'Uptime', value: '99.98%', caption: 'Prototype health is stable', icon: 'bi-graph-up-arrow', tone: 'accent' },
+        { label: 'Visitors today', value: 248, caption: '+28% since yesterday', icon: 'bi-people-fill', tone: 'primary', trend: 'up' },
+        { label: 'Pending approvals', value: 7, caption: '2 urgent · 5 normal', icon: 'bi-person-check-fill', tone: 'warning', trend: 'stable' },
+        { label: 'Security alerts', value: 1, caption: '0 critical · 1 warning', icon: 'bi-exclamation-triangle-fill', tone: 'success', trend: 'down' },
+        { label: 'System uptime', value: '99.98%', caption: '24/7 monitoring active', icon: 'bi-graph-up-arrow', tone: 'accent', trend: 'up' },
       ],
       quickActions: [
-        { title: 'Approve access requests', description: 'Review newly registered accounts and grant the correct role.', icon: 'bi-person-badge-fill' },
-        { title: 'Open analytics', description: 'Present daily trends, top desk activity, and occupancy at a glance.', icon: 'bi-graph-up-arrow' },
-        { title: 'Review audit log', description: 'Inspect the latest security and operations events.', icon: 'bi-journal-text' },
+        { title: 'Approve access requests', description: 'Review newly registered accounts and grant the correct role.', icon: 'bi-person-badge-fill', action: 'approve-requests' },
+        { title: 'View analytics dashboard', description: 'Real-time visitor trends, peak hours, and occupancy analytics.', icon: 'bi-graph-up-arrow', action: 'open-analytics' },
+        { title: 'Review audit log', description: 'Inspect the latest security and operations events with timestamps.', icon: 'bi-journal-text', action: 'audit-log' },
+        { title: 'Configure security policies', description: 'Manage blacklist rules, access controls, and compliance settings.', icon: 'bi-shield-check', action: 'config-security' },
       ],
       activity: [
         { title: 'New admin created', meta: 'Nadia Hussain · 4 min ago', badge: 'success' },
@@ -37,26 +39,28 @@
     },
     receptionist: {
       label: 'Receptionist',
-      title: 'Front-desk operations hub',
-      subtitle: 'Manage arrivals, check-ins, and visitor communication in one place.',
+      title: 'Front-Desk Operations Hub',
+      subtitle: 'Manage arrivals, check-ins, visitor communication, and badge printing with efficient workflows.',
       icon: 'bi-building-check',
       accent: 'accent',
       stats: [
-        { label: 'Check-ins today', value: 64, caption: 'Front desk handled', icon: 'bi-door-open-fill', tone: 'accent' },
-        { label: 'Visitors waiting', value: 8, caption: 'Lobby queue right now', icon: 'bi-hourglass-split', tone: 'warning' },
-        { label: 'Badges printed', value: 59, caption: 'Smooth reception flow', icon: 'bi-printer-fill', tone: 'success' },
-        { label: 'Avg. check-in', value: '42 sec', caption: 'Fast prototype flow', icon: 'bi-lightning-charge-fill', tone: 'primary' },
+        { label: 'Check-ins today', value: 94, caption: 'Smooth reception flow', icon: 'bi-door-open-fill', tone: 'accent', trend: 'up' },
+        { label: 'Visitors in lobby', value: 12, caption: '8 waiting · 4 processing', icon: 'bi-hourglass-split', tone: 'warning', trend: 'stable' },
+        { label: 'Badges printed', value: 88, caption: 'Average print time: 38s', icon: 'bi-printer-fill', tone: 'success', trend: 'up' },
+        { label: 'Avg. check-in', value: '38 sec', caption: 'Optimized reception flow', icon: 'bi-lightning-charge-fill', tone: 'primary', trend: 'down' },
       ],
       quickActions: [
-        { title: 'Register a visitor', description: 'Create a polished front-desk intake in seconds.', icon: 'bi-person-plus-fill' },
-        { title: 'Search a guest', description: 'Find appointments, badges, and host details quickly.', icon: 'bi-search' },
-        { title: 'Print badge', description: 'Issue a clean, presentation-ready visitor badge.', icon: 'bi-printer-fill' },
+        { title: 'Register a visitor', description: 'Fast intake form with auto-verification and badge generation.', icon: 'bi-person-plus-fill', action: 'register-visitor' },
+        { title: 'Search visitor profile', description: 'Find appointments, badges, history, and host information quickly.', icon: 'bi-search', action: 'search-guest' },
+        { title: 'Print or reprint badge', description: 'Issue visitor badges with QR codes for streamlined access.', icon: 'bi-printer-fill', action: 'print-badge' },
+        { title: 'Notify host of arrival', description: 'Send real-time notifications to hosts about visitor arrivals.', icon: 'bi-bell-fill', action: 'notify-host' },
       ],
       activity: [
-        { title: 'Walk-in checked in', meta: 'Imran Ali · 2 min ago', badge: 'success' },
-        { title: 'Appointment confirmed', meta: 'Front desk · 11 min ago', badge: 'info' },
-        { title: 'Badge reprint requested', meta: 'North lobby · 19 min ago', badge: 'warning' },
-        { title: 'Visitor checked out', meta: 'Main reception · 27 min ago', badge: 'success' },
+        { title: 'Walk-in visitor checked in', meta: 'Imran Ali · 2 min ago', badge: 'success' },
+        { title: 'Appointment auto-confirmed', meta: 'Front desk system · 8 min ago', badge: 'info' },
+        { title: 'Badge reprint completed', meta: 'North lobby station · 15 min ago', badge: 'warning' },
+        { title: 'Visitor checked out', meta: 'Main reception · 22 min ago', badge: 'success' },
+        { title: 'Same-day appointment verified', meta: 'Calendar sync · 31 min ago', badge: 'success' },
       ],
       queue: [
         { name: 'Zara Munir', role: 'Appointment arrival', status: 'Ready', time: 'Now' },
@@ -66,78 +70,85 @@
       focus: [
         'Fast registration',
         'Queue management',
-        'Badge printing',
+        'Badge operations',
         'Host notifications',
+        'Appointment verification',
       ],
     },
     security: {
       label: 'Security',
-      title: 'Perimeter watch console',
-      subtitle: 'Track exception handling, incident escalations, and high-risk entries.',
+      title: 'Perimeter Watch Console',
+      subtitle: 'Track access control, manage incidents, monitor threats, and maintain facility security protocols.',
       icon: 'bi-shield-exclamation',
       accent: 'warning',
       stats: [
-        { label: 'Active alerts', value: 3, caption: 'Need eyes on them', icon: 'bi-bell-fill', tone: 'danger' },
-        { label: 'Screened entries', value: 92, caption: 'All clear at the gate', icon: 'bi-check2-circle', tone: 'success' },
-        { label: 'Flagged visitors', value: 4, caption: 'Held for review', icon: 'bi-ban-fill', tone: 'warning' },
-        { label: 'Response time', value: '1.8 min', caption: 'Escalations resolved quickly', icon: 'bi-stopwatch-fill', tone: 'primary' },
+        { label: 'Active alerts', value: 2, caption: 'All monitored · escalation ready', icon: 'bi-bell-fill', tone: 'danger', trend: 'stable' },
+        { label: 'Screened entries', value: 156, caption: 'All cleared · no blocks', icon: 'bi-check2-circle', tone: 'success', trend: 'up' },
+        { label: 'Flagged visitors', value: 3, caption: '1 high-risk · 2 watch-list', icon: 'bi-ban-fill', tone: 'warning', trend: 'stable' },
+        { label: 'Response time', value: '1.2 min', caption: 'Well under SLA', icon: 'bi-stopwatch-fill', tone: 'primary', trend: 'down' },
       ],
       quickActions: [
-        { title: 'Open incident log', description: 'Review suspicious visits and resolved incidents.', icon: 'bi-clipboard2-data-fill' },
-        { title: 'Review blacklist', description: 'Inspect blocked entries and their matching rules.', icon: 'bi-x-octagon-fill' },
-        { title: 'Trigger lockdown', description: 'Keep emergency action visible for presentation.', icon: 'bi-shield-fill-exclamation' },
+        { title: 'View incident log', description: 'Review all security events, suspicious visits, and resolved incidents.', icon: 'bi-clipboard2-data-fill', action: 'incident-log' },
+        { title: 'Manage blacklist', description: 'Add, review, or remove visitors from the security watch list.', icon: 'bi-x-octagon-fill', action: 'blacklist-review' },
+        { title: 'Flag visitor for review', description: 'Mark suspicious visitors for enhanced monitoring and screening.', icon: 'bi-exclamation-circle-fill', action: 'flag-visitor' },
+        { title: 'Trigger security alert', description: 'Escalate situations to management with automated notifications.', icon: 'bi-shield-fill-exclamation', action: 'security-alert' },
       ],
       activity: [
-        { title: 'Restricted badge denied', meta: 'East gate · 5 min ago', badge: 'danger' },
-        { title: 'Escort requested', meta: 'Security desk · 14 min ago', badge: 'warning' },
-        { title: 'Incident resolved', meta: 'Front gate · 21 min ago', badge: 'success' },
-        { title: 'Perimeter sweep complete', meta: 'North wing · 33 min ago', badge: 'info' },
+        { title: 'Unauthorized badge denied', meta: 'East gate · 3 min ago', badge: 'danger' },
+        { title: 'Escort request approved', meta: 'Security desk · 12 min ago', badge: 'info' },
+        { title: 'Incident logged & resolved', meta: 'Front gate · 18 min ago', badge: 'success' },
+        { title: 'Blacklist match detected', meta: 'Visitor screening · 26 min ago', badge: 'danger' },
+        { title: 'Perimeter sweep completed', meta: 'All entrances · 42 min ago', badge: 'success' },
       ],
       queue: [
         { name: 'Asad Qureshi', role: 'Flag review', status: 'Hold', time: 'Now' },
-        { name: 'Hina Shah', role: 'Escort escort', status: 'Escalated', time: '4 min' },
-        { name: 'Umer Siddiq', role: 'Device check', status: 'Ready', time: '9 min' },
+        { name: 'Hina Shah', role: 'Escort request', status: 'Escalated', time: '4 min' },
+        { name: 'Umer Siddiq', role: 'Background check', status: 'Pending', time: '9 min' },
       ],
       focus: [
-        'Risk screening',
+        'Risk assessment',
+        'Threat detection',
         'Incident response',
-        'Blacklist control',
-        'Gate monitoring',
+        'Access control',
+        'Blacklist management',
       ],
     },
     other: {
       label: 'Operations',
-      title: 'Team dashboard',
-      subtitle: 'A clean role-based workspace for any additional department or custom role.',
+      title: 'Team Coordination Dashboard',
+      subtitle: 'Manage operations, coordinate teams, generate reports, and monitor key performance indicators.',
       icon: 'bi-grid-1x2-fill',
       accent: 'success',
       stats: [
-        { label: 'Tasks completed', value: 31, caption: 'This shift', icon: 'bi-check2-square', tone: 'success' },
-        { label: 'Open requests', value: 5, caption: 'Awaiting response', icon: 'bi-inbox-fill', tone: 'warning' },
-        { label: 'Team members', value: 14, caption: 'On the roster', icon: 'bi-people-fill', tone: 'accent' },
-        { label: 'SLA score', value: '96%', caption: 'Meeting internal targets', icon: 'bi-award-fill', tone: 'primary' },
+        { label: 'Tasks completed', value: 47, caption: 'This shift', icon: 'bi-check2-square', tone: 'success', trend: 'up' },
+        { label: 'Open requests', value: 8, caption: '3 urgent · 5 standard', icon: 'bi-inbox-fill', tone: 'warning', trend: 'stable' },
+        { label: 'Team members', value: 18, caption: 'All available', icon: 'bi-people-fill', tone: 'accent', trend: 'up' },
+        { label: 'SLA compliance', value: '98.5%', caption: 'Exceeding targets', icon: 'bi-award-fill', tone: 'primary', trend: 'up' },
       ],
       quickActions: [
-        { title: 'Open task board', description: 'Organize shift work and keep everyone aligned.', icon: 'bi-kanban-fill' },
-        { title: 'Review handoff notes', description: 'Collect the key updates your team needs for today.', icon: 'bi-journal-check' },
-        { title: 'Share a status brief', description: 'Present a polished update to stakeholders.', icon: 'bi-megaphone-fill' },
+        { title: 'Generate daily report', description: 'Create comprehensive reports on visitors, incidents, and compliance.', icon: 'bi-file-earmark-pdf-fill', action: 'generate-report' },
+        { title: 'View team statistics', description: 'Monitor team performance, shift metrics, and operational KPIs.', icon: 'bi-graph-up-arrow', action: 'view-stats' },
+        { title: 'Export visitor data', description: 'Bulk export visitor logs and records for analysis and archiving.', icon: 'bi-download', action: 'export-data' },
+        { title: 'Schedule team briefing', description: 'Organize standup meetings and share shift updates with team.', icon: 'bi-calendar-event', action: 'schedule-briefing' },
       ],
       activity: [
-        { title: 'Task completed', meta: 'Operations team · 8 min ago', badge: 'success' },
-        { title: 'Request assigned', meta: 'New owner added · 15 min ago', badge: 'info' },
-        { title: 'Report shared', meta: 'Team inbox · 24 min ago', badge: 'warning' },
-        { title: 'Meeting scheduled', meta: 'Today at 4:30 PM · 41 min ago', badge: 'primary' },
+        { title: 'Shift report submitted', meta: 'Operations lead · 5 min ago', badge: 'success' },
+        { title: 'New task assigned', meta: 'Team coordinator · 14 min ago', badge: 'info' },
+        { title: 'Performance metrics updated', meta: 'Analytics system · 22 min ago', badge: 'info' },
+        { title: 'Team briefing scheduled', meta: 'Today at 5:30 PM · 39 min ago', badge: 'warning' },
+        { title: 'Monthly report finalized', meta: 'Finance team · 1 hour ago', badge: 'success' },
       ],
       queue: [
-        { name: 'Team briefing', role: 'Standup', status: 'Scheduled', time: '9:00' },
-        { name: 'Backlog review', role: 'Planning', status: 'Open', time: '13:00' },
-        { name: 'Stakeholder sync', role: 'Presentation', status: 'Pending', time: '16:30' },
+        { name: 'Morning standup', role: 'Team meeting', status: 'Ready', time: '9:00 AM' },
+        { name: 'Backlog refinement', role: 'Planning', status: 'Scheduled', time: '1:00 PM' },
+        { name: 'Stakeholder sync', role: 'Executive brief', status: 'Pending', time: '4:30 PM' },
       ],
       focus: [
         'Task visibility',
         'Team coordination',
-        'Clear handoffs',
-        'Executive summary',
+        'Performance tracking',
+        'Report generation',
+        'Data analytics',
       ],
     },
   };
@@ -150,13 +161,27 @@
   ];
 
   const state = {
-    users: seededUsers.map((user) => ({ ...user, roleSlug: slugifyRole(user.role) })),
+    users: seededUsers.map((user) => ({ ...user, roleSlug: slugifyRole(user.role), lastActive: new Date() })),
     currentUser: null,
     activeAuthView: 'login',
     activeSection: 'overview',
     pendingEmail: '',
     pendingPassword: '',
     mobileSidebarOpen: false,
+    notifications: [],
+    recentActivity: [],
+    analyticsData: {
+      visitorsByHour: [12, 18, 25, 32, 28, 35, 42, 38, 44, 48, 52, 58],
+      peakHour: '2:00 PM - 3:00 PM',
+      avgCheckInTime: 38,
+      avgCheckOutTime: 12,
+    },
+    searchHistory: [],
+    filters: {
+      dateRange: 'today',
+      visitorStatus: 'all',
+      sortBy: 'recent',
+    },
   };
 
   const app = document.getElementById('app');
@@ -229,6 +254,10 @@
       toast.style.transform = 'translateY(-6px)';
       setTimeout(() => toast.remove(), 220);
     }, 3200);
+
+    // Add to recent notifications
+    state.notifications.push({ type, title, message, timestamp: new Date() });
+    if (state.notifications.length > 50) state.notifications.shift();
   }
 
   function formatDateTime() {
@@ -714,13 +743,14 @@
       ['operations', 'Operations', 'bi-layers-half'],
       ['activity', 'Activity', 'bi-activity'],
       ['queue', 'Queue', 'bi-list-check'],
+      ['analytics', 'Analytics', 'bi-graph-up-arrow'],
       ['profile', 'Profile', 'bi-person-badge'],
     ];
 
     return items.map(([slug, label, icon]) => `
       <button class="sidebar-link ${activeSection === slug ? 'active' : ''}" type="button" data-section-link="${slug}">
         <span><i class="bi ${icon}"></i> ${label}</span>
-        <small>${slug === 'overview' ? 'Summary' : 'View'}</small>
+        <small>${slug === 'overview' ? 'Dashboard' : capitalize(slug)}</small>
       </button>
     `).join('');
   }
@@ -731,6 +761,138 @@
     const activity = template.activity;
     const queue = template.queue;
     const focus = template.focus;
+
+    if (section === 'analytics') {
+      return `
+        <div class="dashboard-content">
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <h2>Real-time Analytics Dashboard</h2>
+              <p class="section-note">Visitor trends, performance metrics, and operational insights</p>
+            </div>
+            <div style="padding: 20px; background: rgba(37,99,235,0.05); border-radius: 12px; margin-top: 16px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #2563eb;">
+                  <strong style="font-size: 0.85rem; color: #64748b;">Hourly Visitors</strong>
+                  <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px;">${state.analyticsData.visitorsByHour.reduce((a,b) => a+b, 0)}</div>
+                  <small style="color: #10b981;">↑ 12% from last hour</small>
+                </div>
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                  <strong style="font-size: 0.85rem; color: #64748b;">Peak Hour</strong>
+                  <div style="font-size: 1rem; font-weight: 600; margin-top: 8px;">${state.analyticsData.peakHour}</div>
+                  <small style="color: #f59e0b;">Expected surge</small>
+                </div>
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 4px solid #10b981;">
+                  <strong style="font-size: 0.85rem; color: #64748b;">Avg Check-in</strong>
+                  <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px;">${state.analyticsData.avgCheckInTime}s</div>
+                  <small style="color: #10b981;">↓ 5% improvement</small>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    if (section === 'activity') {
+      return `
+        <div class="dashboard-content">
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <h2>Activity Feed</h2>
+              <p class="section-note">Real-time system events and operations</p>
+            </div>
+            <div class="timeline" style="padding: 20px;">
+              ${activity.map((item) => `
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:${activityTone(item.badge)};"></div>
+                  <div class="timeline-content">
+                    <strong>${item.title}</strong>
+                    <p>${item.meta}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    if (section === 'queue') {
+      return `
+        <div class="dashboard-content">
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <h2>Current Queue</h2>
+              <p class="section-note">Items pending your attention</p>
+            </div>
+            <table class="table" style="margin-top: 16px;">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${queue.map((item) => `
+                  <tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.role}</td>
+                    <td><span class="status-badge ${queueTone(item.status)}">${item.status}</span></td>
+                    <td>${item.time}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </section>
+        </div>
+      `;
+    }
+
+    if (section === 'operations') {
+      return `
+        <div class="dashboard-content">
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <h2>Operations & Controls</h2>
+              <p class="section-note">Role-specific operations and workflows</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 16px;">
+              ${quickActions.map((action) => `
+                <div style="padding: 16px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+                  <div style="font-size: 1.5rem; color: var(--primary); margin-bottom: 12px;"><i class="bi ${action.icon}"></i></div>
+                  <strong>${action.title}</strong>
+                  <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0;">${action.description}</p>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    if (section === 'profile') {
+      return `
+        <div class="dashboard-content">
+          <section class="dashboard-card">
+            <div class="section-heading">
+              <h2>User Profile</h2>
+              <p class="section-note">Your account information and settings</p>
+            </div>
+            <div style="padding: 20px; background: rgba(37,99,235,0.05); border-radius: 8px; margin-top: 16px;">
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                <div><strong>Name</strong><p style="color: var(--muted);">${user.name}</p></div>
+                <div><strong>Email</strong><p style="color: var(--muted);">${user.email}</p></div>
+                <div><strong>Role</strong><p style="color: var(--muted);">${user.role}</p></div>
+                <div><strong>Status</strong><p style="color: var(--muted);">Active</p></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      `;
+    }
 
     return `
       <div class="dashboard-content">
@@ -920,8 +1082,20 @@
     state.activeSection = 'overview';
     state.mobileSidebarOpen = false;
     state.activeAuthView = 'login';
-    showToast('info', 'Signed out', 'Authentication state was cleared from memory.');
+    showToast('info', 'Signed out', 'Session cleared from memory.');
     routeTo('login');
+  }
+
+  function formatTimeShort() {
+    return new Intl.DateTimeFormat('en', { hour: 'numeric', minute: '2-digit' }).format(new Date());
+  }
+
+  function formatLongDate() {
+    return new Intl.DateTimeFormat('en', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }).format(new Date());
   }
 
   window.addEventListener('hashchange', render);

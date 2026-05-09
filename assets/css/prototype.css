@@ -24,6 +24,46 @@
   --sidebar-width: 286px;
 }
 
+/* Accessibility & Focus styles */
+:focus-visible {
+  outline: 3px solid rgba(37,99,235,0.18);
+  outline-offset: 2px;
+}
+
+button:focus, a:focus, input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+.button, .button-secondary, .button-tertiary { transition: transform 160ms ease, box-shadow 160ms ease; }
+.button:focus-visible, .button-secondary:focus-visible, .button-tertiary:focus-visible { box-shadow: 0 6px 18px rgba(37,99,235,.12); transform: translateY(-1px); }
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* Modal improvements */
+.modal-backdrop { background: rgba(2,6,23,0.6); }
+.modal { max-width: 760px; width: calc(100% - 48px); }
+
+/* Table header interactive affordance */
+.table thead th[role="button"] { position: relative; }
+.table thead th[role="button"]:after { content: '▾'; position: absolute; right: 10px; opacity: 0.28; font-size: 0.9rem; }
+.table[data-sort-dir="asc"] thead th:after { content: '▴'; }
+
+/* Ripple effect for buttons */
+.ripple { position: relative; overflow: hidden; }
+.ripple .ripple-ink {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(255,255,255,0.35);
+  animation: ripple 600ms linear;
+  pointer-events: none;
+}
+@keyframes ripple { to { transform: scale(6); opacity: 0; } }
+
+
 * { box-sizing: border-box; }
 
 html, body { min-height: 100%; }
