@@ -1,30 +1,6 @@
 (function () {
-    // ─────────────────────────────────────────────────────────────────────────────────────
-    // ENHANCED DATA STORE WITH FULL OPERATIONAL SUPPORT
-    // ─────────────────────────────────────────────────────────────────────────────────────
-    const dataStore = {
-      visitors: [
-        { id: 'V001', name: 'Ahmed Hassan', email: 'ahmed@company.com', company: 'Tech Corp', hostName: 'John Smith', purpose: 'Meeting', status: 'checked-in', checkInTime: '9:15 AM', checkOutTime: null, badge: '#B-2026-001', photo: null },
-        { id: 'V002', name: 'Fatima Khan', email: 'fatima@email.com', company: 'Design Inc', hostName: 'Sarah Ahmed', purpose: 'Interview', status: 'checked-in', checkInTime: '9:45 AM', checkOutTime: null, badge: '#B-2026-002', photo: null },
-        { id: 'V003', name: 'Hassan Ali', email: 'hassan@enterprise.com', company: 'Enterprise Ltd', hostName: 'Mike Johnson', purpose: 'Delivery', status: 'checked-out', checkInTime: '8:30 AM', checkOutTime: '9:00 AM', badge: '#B-2026-003', photo: null },
-      ],
-      appointments: [
-        { id: 'A001', visitorName: 'Zara Munir', hostName: 'Lisa Chen', date: '2026-05-09', time: '10:00 AM', status: 'scheduled', notes: 'Project discussion' },
-        { id: 'A002', visitorName: 'Hamza Raza', hostName: 'David Brown', date: '2026-05-09', time: '2:00 PM', status: 'scheduled', notes: 'Budget review' },
-      ],
-      incidents: [
-        { id: 'INC001', visitorName: 'Unknown', type: 'Unauthorized entry attempt', severity: 'high', status: 'resolved', date: '2026-05-09', time: '8:45 AM', meta: 'Badge denied at east gate' },
-        { id: 'INC002', visitorName: 'Test Visitor', type: 'Badge malfunction', severity: 'low', status: 'resolved', date: '2026-05-09', time: '9:30 AM', meta: 'Reprint issued' },
-      ],
-      blacklist: [
-        { id: 'BL001', name: 'Unknown Person', reason: 'Security threat', dateAdded: '2026-04-15', status: 'active', riskLevel: 'high' },
-        { id: 'BL002', name: 'Test Subject', reason: 'Policy violation', dateAdded: '2026-04-20', status: 'active', riskLevel: 'medium' },
-      ],
-      reports: [],
-    };
-
     const role = user.roleSlug || 'other';
-    const commonNote = '<p class="section-note">Smart operations with real-time data persistence and advanced filtering capabilities.</p>';
+    const commonNote = '<p class="section-note">Use the tools below to manage operations; actions persist to localStorage for demo purposes.</p>';
 
     if (role === 'admin') {
       return `
@@ -32,75 +8,33 @@
           <section class="dashboard-card">
             <div class="section-heading">
               <div>
-                <div class="eyebrow"><i class="bi bi-person-badge-fill"></i> Advanced user management</div>
-                <h2>Manage user accounts and access control</h2>
+                <div class="eyebrow"><i class="bi bi-person-badge-fill"></i> User management</div>
+                <h2>Manage user accounts</h2>
                 ${commonNote}
               </div>
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <input id="__user_search" class="input" type="text" placeholder="Filter users..." style="min-width: 200px;" />
+              <div>
                 <button class="button" data-action="add-user"><i class="bi bi-person-plus"></i> Add user</button>
               </div>
             </div>
-            <div style="margin-top:12px; overflow-x: auto;">
+            <div style="margin-top:12px;">
               <table class="table" id="__users_table">
                 <thead>
-                  <tr>
-                    <th style="cursor: pointer; user-select: none;">Name <i class="bi bi-arrow-down-up" style="font-size: 0.75rem; opacity: 0.5;"></i></th>
-                    <th style="cursor: pointer; user-select: none;">Email <i class="bi bi-arrow-down-up" style="font-size: 0.75rem; opacity: 0.5;"></i></th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Last Active</th>
-                    <th>Actions</th>
-                  </tr>
+                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                   ${state.users.map(u => `
                     <tr data-user-email="${u.email}">
-                      <td><strong>${u.name}</strong></td>
+                      <td>${u.name}</td>
                       <td>${u.email}</td>
-                      <td><span class="status-badge accent">${u.role}</span></td>
-                      <td><span class="status-badge success">Active</span></td>
-                      <td>${new Date(u.lastActive).toLocaleTimeString()}</td>
-                      <td style="display:flex;gap:8px; white-space: nowrap;">
-                        <button class="button-tertiary" data-action="edit-user" data-email="${u.email}" title="Edit"><i class="bi bi-pencil"></i></button>
-                        <button class="button-secondary" data-action="delete-user" data-email="${u.email}" title="Delete"><i class="bi bi-trash"></i></button>
-                        <button class="button-secondary" data-action="view-audit" data-email="${u.email}" title="Audit"><i class="bi bi-eye"></i></button>
+                      <td>${u.role}</td>
+                      <td style="display:flex;gap:8px;">
+                        <button class="button-tertiary" data-action="edit-user" data-email="${u.email}"><i class="bi bi-pencil"></i> Edit</button>
+                        <button class="button-secondary" data-action="delete-user" data-email="${u.email}"><i class="bi bi-trash"></i> Delete</button>
                       </td>
                     </tr>
                   `).join('')}
                 </tbody>
               </table>
-            </div>
-          </section>
-
-          <section class="dashboard-card" style="margin-top: 20px;">
-            <div class="section-heading">
-              <div>
-                <div class="eyebrow"><i class="bi bi-shield-check"></i> System health monitoring</div>
-                <h2>Real-time system metrics and status</h2>
-              </div>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
-              <div style="padding: 16px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border-left: 4px solid #10b981;">
-                <strong style="font-size: 0.85rem; color: #64748b;">System Uptime</strong>
-                <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #10b981;">99.98%</div>
-                <small style="color: #10b981;">↑ All systems nominal</small>
-              </div>
-              <div style="padding: 16px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; border-left: 4px solid #2563eb;">
-                <strong style="font-size: 0.85rem; color: #64748b;">Active Users</strong>
-                <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #2563eb;">${state.users.length}</div>
-                <small style="color: #2563eb;">All online and responsive</small>
-              </div>
-              <div style="padding: 16px; background: rgba(245, 158, 11, 0.08); border-radius: 8px; border-left: 4px solid #f59e0b;">
-                <strong style="font-size: 0.85rem; color: #64748b;">Pending Approvals</strong>
-                <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #f59e0b;">7</div>
-                <small style="color: #f59e0b;">2 urgent · 5 normal</small>
-              </div>
-              <div style="padding: 16px; background: rgba(239, 68, 68, 0.08); border-radius: 8px; border-left: 4px solid #ef4444;">
-                <strong style="font-size: 0.85rem; color: #64748b;">Security Alerts</strong>
-                <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #ef4444;">1</div>
-                <small style="color: #10b981;">0 critical · 1 warning</small>
-              </div>
             </div>
           </section>
         </div>
@@ -113,85 +47,37 @@
           <section class="dashboard-card">
             <div class="section-heading">
               <div>
-                <div class="eyebrow"><i class="bi bi-door-open"></i> Enhanced visitor management</div>
-                <h2>Smart check-in / check-out with real-time notifications</h2>
+                <div class="eyebrow"><i class="bi bi-door-open"></i> Visitor management</div>
+                <h2>Check-in / Check-out</h2>
                 ${commonNote}
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
-                <input id="__visitor_search" class="input" placeholder="Search visitors by name or company..." style="min-width:250px;" />
-                <button class="button" data-action="register-visitor"><i class="bi bi-person-plus-fill"></i> Register new</button>
+                <input id="__visitor_search" class="input" placeholder="Search visitors..." style="min-width:200px;" />
+                <button class="button" data-action="register-visitor"><i class="bi bi-person-plus-fill"></i> Register</button>
               </div>
             </div>
-            <div style="margin-top:12px; overflow-x: auto;">
+            <div style="margin-top:12px;">
               <table class="table" id="__visitors_table">
                 <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>Host</th>
-                    <th>Purpose</th>
-                    <th>Status</th>
-                    <th>Check-in Time</th>
-                    <th>Duration</th>
-                    <th>Badge</th>
-                    <th>Actions</th>
-                  </tr>
+                  <tr><th>Name</th><th>Company</th><th>Host</th><th>Purpose</th><th>Status</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
-                  ${dataStore.visitors.map(v => {
-                    const checkInTime = new Date(`2026-05-09 ${v.checkInTime}`);
-                    const checkOutTime = v.checkOutTime ? new Date(`2026-05-09 ${v.checkOutTime}`) : new Date();
-                    const durationMin = Math.floor((checkOutTime - checkInTime) / 60000);
-                    return `
-                      <tr data-visitor-id="${v.id}" style="background: ${v.status === 'checked-in' ? 'rgba(16, 185, 129, 0.05)' : 'rgba(107, 114, 128, 0.05)'};">
-                        <td><strong>${v.name}</strong></td>
-                        <td>${v.company || 'N/A'}</td>
-                        <td>${v.hostName || 'N/A'}</td>
-                        <td>${v.purpose || 'N/A'}</td>
-                        <td><span class="status-badge ${v.status === 'checked-in' ? 'success' : 'info'}">${v.status}</span></td>
-                        <td>${v.checkInTime}</td>
-                        <td>${durationMin} min</td>
-                        <td><code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">${v.badge}</code></td>
-                        <td style="display:flex;gap:6px; white-space: nowrap;">
-                          <button class="button" data-action="toggle-checkin" data-visitor-id="${v.id}" title="${v.status === 'checked-in' ? 'Check-out' : 'Check-in'}">
-                            <i class="bi ${v.status === 'checked-in' ? 'bi-box-arrow-in-left' : 'bi-box-arrow-in-right'}"></i>
-                          </button>
-                          <button class="button-secondary" data-action="print-badge" data-visitor-id="${v.id}" title="Print badge">
-                            <i class="bi bi-printer-fill"></i>
-                          </button>
-                          <button class="button-tertiary" data-action="notify-host" data-visitor-id="${v.id}" title="Notify host">
-                            <i class="bi bi-bell"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    `;
-                  }).join('')}
+                  ${dataStore.visitors.map(v => `
+                    <tr data-visitor-id="${v.id}">
+                      <td>${v.name}</td>
+                      <td>${v.company || ''}</td>
+                      <td>${v.hostName || ''}</td>
+                      <td>${v.purpose || ''}</td>
+                      <td><span class="status-badge ${v.status === 'checked-in' ? 'success' : 'warning'}">${v.status || 'waiting'}</span></td>
+                      <td style="display:flex;gap:8px;">
+                        <button class="button" data-action="toggle-checkin" data-visitor-id="${v.id}">${v.status==='checked-in' ? '<i class="bi bi-box-arrow-in-left"></i> Check-out' : '<i class="bi bi-box-arrow-in-right"></i> Check-in'}</button>
+                        <button class="button-tertiary" data-action="print-badge" data-visitor-id="${v.id}"><i class="bi bi-printer-fill"></i> Badge</button>
+                      </td>
+                    </tr>
+                  `).join('')}
                 </tbody>
               </table>
             </div>
-          </section>
-
-          <section class="dashboard-card" style="margin-top: 20px;">
-            <div class="section-heading">
-              <h2>Appointments & Pre-verification</h2>
-              <p class="section-note">${dataStore.appointments.length} appointments scheduled for today</p>
-            </div>
-            <table class="table" style="margin-top: 12px;">
-              <thead>
-                <tr><th>Visitor</th><th>Host</th><th>Time</th><th>Status</th><th>Actions</th></tr>
-              </thead>
-              <tbody>
-                ${dataStore.appointments.map(a => `
-                  <tr>
-                    <td><strong>${a.visitorName}</strong></td>
-                    <td>${a.hostName}</td>
-                    <td>${a.time}</td>
-                    <td><span class="status-badge primary">${a.status}</span></td>
-                    <td><button class="button-secondary" data-action="confirm-appointment"><i class="bi bi-check2"></i> Confirm</button></td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
           </section>
         </div>
       `;
@@ -200,63 +86,31 @@
     if (role === 'security') {
       return `
         <div class="dashboard-content">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
-            <div style="padding: 16px; background: rgba(239, 68, 68, 0.08); border-radius: 8px; border-left: 4px solid #ef4444;">
-              <strong style="font-size: 0.85rem; color: #64748b;">Active Alerts</strong>
-              <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #ef4444;">${dataStore.incidents.filter(i => i.status === 'active').length}</div>
-              <small style="color: #ef4444;">Requires immediate attention</small>
-            </div>
-            <div style="padding: 16px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border-left: 4px solid #10b981;">
-              <strong style="font-size: 0.85rem; color: #64748b;">Screened Entries</strong>
-              <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #10b981;">156</div>
-              <small style="color: #10b981;">All cleared today</small>
-            </div>
-            <div style="padding: 16px; background: rgba(245, 158, 11, 0.08); border-radius: 8px; border-left: 4px solid #f59e0b;">
-              <strong style="font-size: 0.85rem; color: #64748b;">Flagged Visitors</strong>
-              <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #f59e0b;">${dataStore.blacklist.length}</div>
-              <small style="color: #f59e0b;">Under watch</small>
-            </div>
-            <div style="padding: 16px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; border-left: 4px solid #2563eb;">
-              <strong style="font-size: 0.85rem; color: #64748b;">Response Time</strong>
-              <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #2563eb;">1.2 min</div>
-              <small style="color: #2563eb;">Below SLA</small>
-            </div>
-          </div>
-
           <section class="dashboard-card">
             <div class="section-heading">
               <div>
-                <div class="eyebrow"><i class="bi bi-shield-exclamation"></i> Incident management</div>
-                <h2>Advanced security operations and threat analysis</h2>
+                <div class="eyebrow"><i class="bi bi-shield-exclamation"></i> Security operations</div>
+                <h2>Incident management</h2>
                 ${commonNote}
               </div>
-              <button class="button" data-action="log-incident"><i class="bi bi-exclamation-triangle"></i> Log new incident</button>
+              <div>
+                <button class="button" data-action="log-incident"><i class="bi bi-exclamation-triangle"></i> Log incident</button>
+              </div>
             </div>
-            <div style="margin-top:12px; overflow-x: auto;">
+            <div style="margin-top:12px;">
               <table class="table" id="__incidents_table">
                 <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Visitor/Location</th>
-                    <th>Severity</th>
-                    <th>Status</th>
-                    <th>Date & Time</th>
-                    <th>Notes</th>
-                    <th>Actions</th>
-                  </tr>
+                  <tr><th>Title</th><th>Severity</th><th>Reported</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                   ${dataStore.incidents.map(i => `
-                    <tr data-incident-id="${i.id}" style="background: ${i.severity === 'high' ? 'rgba(239, 68, 68, 0.05)' : i.severity === 'medium' ? 'rgba(245, 158, 11, 0.05)' : 'rgba(107, 114, 128, 0.05)'};">
-                      <td><strong>${i.type}</strong></td>
-                      <td>${i.visitorName}</td>
-                      <td><span class="status-badge ${i.severity === 'high' ? 'danger' : i.severity === 'medium' ? 'warning' : 'info'}">${capitalize(i.severity)}</span></td>
-                      <td><span class="status-badge ${i.status === 'resolved' ? 'success' : 'warning'}">${capitalize(i.status)}</span></td>
-                      <td>${i.date} ${i.time}</td>
-                      <td style="font-size: 0.9rem; color: #64748b;">${i.meta}</td>
-                      <td style="display:flex;gap:6px; white-space: nowrap;">
-                        ${i.status === 'active' ? `<button class="button-secondary" data-action="incident-resolve" data-incident-id="${i.id}"><i class="bi bi-check2"></i> Resolve</button>` : ''}
-                        <button class="button-tertiary" data-action="incident-delete" data-incident-id="${i.id}"><i class="bi bi-trash"></i></button>
+                    <tr data-incident-id="${i.id}">
+                      <td>${i.title}</td>
+                      <td>${i.severity}</td>
+                      <td>${i.meta || ''}</td>
+                      <td style="display:flex;gap:8px;">
+                        <button class="button-secondary" data-action="incident-resolve" data-incident-id="${i.id}"><i class="bi bi-check2-circle"></i> Resolve</button>
+                        <button class="button-tertiary" data-action="incident-delete" data-incident-id="${i.id}"><i class="bi bi-trash"></i> Delete</button>
                       </td>
                     </tr>
                   `).join('')}
@@ -264,119 +118,23 @@
               </table>
             </div>
           </section>
-
-          <section class="dashboard-card" style="margin-top: 20px;">
-            <div class="section-heading">
-              <h2>Blacklist Management & Threat Monitoring</h2>
-              <p class="section-note">${dataStore.blacklist.length} visitors under watch · High-risk detection active</p>
-            </div>
-            <table class="table" style="margin-top: 12px;">
-              <thead>
-                <tr><th>Name</th><th>Reason</th><th>Risk Level</th><th>Date Added</th><th>Status</th><th>Actions</th></tr>
-              </thead>
-              <tbody>
-                ${dataStore.blacklist.map(bl => `
-                  <tr style="background: ${bl.riskLevel === 'high' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(245, 158, 11, 0.05)'};">
-                    <td><strong>${bl.name}</strong></td>
-                    <td>${bl.reason}</td>
-                    <td><span class="status-badge ${bl.riskLevel === 'high' ? 'danger' : 'warning'}">${capitalize(bl.riskLevel)}</span></td>
-                    <td>${bl.dateAdded}</td>
-                    <td><span class="status-badge warning">${bl.status}</span></td>
-                    <td style="display:flex;gap:6px;"><button class="button-secondary" data-action="edit-blacklist"><i class="bi bi-pencil"></i></button><button class="button-tertiary" data-action="remove-blacklist"><i class="bi bi-trash"></i></button></td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </section>
         </div>
       `;
     }
 
     // default operations for other roles
-    function capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
     return `
       <div class="dashboard-content">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
-          <div style="padding: 16px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border-left: 4px solid #10b981;">
-            <strong style="font-size: 0.85rem; color: #64748b;">Tasks Completed</strong>
-            <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #10b981;">47</div>
-            <small style="color: #10b981;">This shift · On target</small>
-          </div>
-          <div style="padding: 16px; background: rgba(245, 158, 11, 0.08); border-radius: 8px; border-left: 4px solid #f59e0b;">
-            <strong style="font-size: 0.85rem; color: #64748b;">Open Requests</strong>
-            <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #f59e0b;">8</div>
-            <small style="color: #f59e0b;">3 urgent · 5 standard</small>
-          </div>
-          <div style="padding: 16px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; border-left: 4px solid #2563eb;">
-            <strong style="font-size: 0.85rem; color: #64748b;">Team Members</strong>
-            <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #2563eb;">18</div>
-            <small style="color: #2563eb;">All online and ready</small>
-          </div>
-          <div style="padding: 16px; background: rgba(59, 130, 246, 0.08); border-radius: 8px; border-left: 4px solid #3b82f6;">
-            <strong style="font-size: 0.85rem; color: #64748b;">SLA Compliance</strong>
-            <div style="font-size: 1.5rem; font-weight: 600; margin-top: 8px; color: #3b82f6;">98.5%</div>
-            <small style="color: #10b981;">↑ Exceeding targets</small>
-          </div>
-        </div>
-
         <section class="dashboard-card">
           <div class="section-heading">
             <div>
-              <div class="eyebrow"><i class="bi bi-gear"></i> Operations & coordination</div>
-              <h2>Advanced team management and reporting</h2>
+              <div class="eyebrow"><i class="bi bi-gear"></i> Operations</div>
+              <h2>Team operations</h2>
               ${commonNote}
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 16px;">
-            <button style="padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='white'; this.style.transform='translateY(0)'" data-action="generate-report">
-              <div style="font-size: 1.3rem; color: #2563eb; margin-bottom: 8px;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
-              <strong>Generate Report</strong>
-              <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0;">Create comprehensive compliance and operational reports in PDF format.</p>
-            </button>
-            <button style="padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='white'; this.style.transform='translateY(0)'" data-action="view-stats">
-              <div style="font-size: 1.3rem; color: #2563eb; margin-bottom: 8px;"><i class="bi bi-graph-up-arrow"></i></div>
-              <strong>View Analytics</strong>
-              <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0;">Monitor team performance, KPIs, and operational metrics with live dashboards.</p>
-            </button>
-            <button style="padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='white'; this.style.transform='translateY(0)'" data-action="export-data">
-              <div style="font-size: 1.3rem; color: #2563eb; margin-bottom: 8px;"><i class="bi bi-download"></i></div>
-              <strong>Export Data</strong>
-              <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0;">Bulk export visitor logs, reports, and compliance records as CSV files.</p>
-            </button>
-            <button style="padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='white'; this.style.transform='translateY(0)'" data-action="schedule-briefing">
-              <div style="font-size: 1.3rem; color: #2563eb; margin-bottom: 8px;"><i class="bi bi-calendar-event"></i></div>
-              <strong>Schedule Briefing</strong>
-              <p style="font-size: 0.9rem; color: var(--muted); margin: 8px 0;">Organize team standup meetings and share shift updates with all members.</p>
-            </button>
-          </div>
-        </section>
-
-        <section class="dashboard-card" style="margin-top: 20px;">
-          <div class="section-heading">
-            <h2>Visitor Management Overview</h2>
-            <p class="section-note">${dataStore.visitors.length} total visitors · ${dataStore.visitors.filter(v => v.status === 'checked-in').length} currently checked in</p>
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-top: 16px;">
-            <div style="padding: 12px; background: rgba(37, 99, 235, 0.05); border-radius: 8px; border: 1px solid rgba(37, 99, 235, 0.2);">
-              <strong style="font-size: 0.85rem;">Quick Statistics</strong>
-              <ul style="margin: 8px 0; padding: 0; list-style: none; font-size: 0.9rem;">
-                <li>✓ Check-in success rate: 99.2%</li>
-                <li>✓ Avg check-in time: 38 seconds</li>
-                <li>✓ Avg check-out time: 12 seconds</li>
-                <li>✓ Peak hour: 2:00 PM - 3:00 PM</li>
-              </ul>
-            </div>
-            <div style="padding: 12px; background: rgba(245, 158, 11, 0.05); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2);">
-              <strong style="font-size: 0.85rem;">Performance Targets</strong>
-              <ul style="margin: 8px 0; padding: 0; list-style: none; font-size: 0.9rem;">
-                <li>✓ SLA compliance: 98.5%</li>
-                <li>✓ Customer satisfaction: 96%</li>
-                <li>✓ System uptime: 99.98%</li>
-                <li>✓ Response time: <60 seconds</li>
-              </ul>
-            </div>
+          <div style="margin-top:12px;">
+            <p>Use the Reports page to generate exports and the Overview to see stats.</p>
           </div>
         </section>
       </div>

@@ -182,6 +182,16 @@
       visitorStatus: 'all',
       sortBy: 'recent',
     },
+    authChat: {
+      open: false,
+      messages: [
+        {
+          role: 'assistant',
+          text: 'Hi, I am the SVMS assistant. Ask me anything about visitor registration, roles, security screening, analytics, or reports before creating your account.',
+          time: new Date(),
+        },
+      ],
+    },
   };
 
   const app = document.getElementById('app');
@@ -438,8 +448,10 @@
           </div>
         </section>
       </div>
+      ${renderAuthAssistantPanel()}
     `;
     bindAuthEvents();
+    requestAnimationFrame(scrollAuthChatToBottom);
   }
 
   function renderLoginForm() {
@@ -537,6 +549,106 @@
     `;
   }
 
+  function renderAuthAssistantPanel() {
+    const isOpen = state.authChat.open;
+    const messages = state.authChat.messages;
+    const suggestedQuestions = [
+      'How do I register a visitor?',
+      'Which role is best for front desk staff?',
+      'How does badge printing work?',
+      'Can the system screen blacklisted visitors?',
+      'How do reports and analytics work?',
+    ];
+
+    return `
+      <section class="demo-credential-panel" aria-label="AI assistant" style="position:fixed;right:18px;bottom:18px;z-index:9999;width:min(320px,calc(100vw - 24px));overflow:visible;">
+        <div aria-hidden="${isOpen ? 'false' : 'true'}" style="position:absolute;right:0;bottom:70px;width:100%;transform:${isOpen ? 'translateY(0) scale(1)' : 'translateY(10px) scale(.96)'};opacity:${isOpen ? '1' : '0'};pointer-events:${isOpen ? 'auto' : 'none'};transition:transform .18s ease, opacity .18s ease;${!isOpen ? 'pointer-events:none;' : ''}">
+          <div style="border:1px solid rgba(148,163,184,.22);border-radius:22px;padding:14px;background:rgba(255,255,255,.985);box-shadow:0 22px 56px rgba(15,23,42,.16);backdrop-filter:blur(14px);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;">
+              <div>
+                <div class="eyebrow" style="color:var(--primary);background:rgba(37,99,235,.08);"><i class="bi bi-headset"></i> Support assistant</div>
+                <h2 style="font-size:.98rem;margin-top:8px;margin-bottom:6px;line-height:1.25;">Need help before signing in?</h2>
+                <p class="section-note" style="margin-bottom:0;font-size:.88rem;">Pick a question or type one in your own words.</p>
+              </div>
+              <button type="button" data-chat-toggle="close" aria-label="Close assistant" style="border:none;background:rgba(15,23,42,.06);width:34px;height:34px;border-radius:999px;cursor:pointer;"><i class="bi bi-x-lg"></i></button>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+              ${suggestedQuestions.map((question) => `<button type="button" class="pill" data-chat-suggest="${escapeAttr(question)}" style="border:none;cursor:pointer;background:rgba(37,99,235,.07);padding:8px 10px;font-size:.82rem;line-height:1.2;"><i class="bi bi-chat-dots"></i> ${question}</button>`).join('')}
+            </div>
+
+            <div id="auth-chat-messages" data-auth-chat-scroll style="display:grid;gap:10px;max-height:220px;overflow:auto;padding-right:4px;margin-bottom:10px;scrollbar-gutter:stable;scroll-behavior:smooth;">
+              ${messages.map((message) => `
+                <div style="display:flex;justify-content:${message.role === 'user' ? 'flex-end' : 'flex-start'};">
+                  <div style="max-width:82%;padding:12px 14px;border-radius:16px;background:${message.role === 'user' ? 'rgba(37,99,235,.12)' : 'rgba(16,185,129,.10)'};border:1px solid ${message.role === 'user' ? 'rgba(37,99,235,.18)' : 'rgba(16,185,129,.18)'};box-shadow:0 6px 18px rgba(15,23,42,.04);">
+                    <div style="font-size:.78rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:${message.role === 'user' ? 'var(--primary)' : 'var(--success)'};margin-bottom:4px;">${message.role === 'user' ? 'You' : 'SVMS Assistant'}</div>
+                    <div style="font-size:.92rem;line-height:1.55;color:var(--text);">${escapeHtml(message.text)}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <form id="auth-chat-form" class="form-grid" style="gap:10px;">
+              <div class="form-row">
+                <label class="form-label" for="auth-chat-question">Ask a question</label>
+                <textarea class="input" id="auth-chat-question" name="question" rows="3" placeholder="Ask about registration, visitor screening, analytics, roles, security, or reports..." style="resize:vertical;min-height:88px;"></textarea>
+              </div>
+              <div class="action-row" style="gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;">
+                <button class="button" type="submit"><i class="bi bi-send-fill"></i> Ask assistant</button>
+                <span class="inline-note">Local answers · no network calls</span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;align-items:center;">
+          <button type="button" data-chat-toggle="open" aria-label="Open assistant" style="display:flex;align-items:center;gap:8px;padding:9px 12px;border:none;border-radius:999px;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;box-shadow:0 12px 28px rgba(37,99,235,.22);cursor:pointer;transition:transform .16s ease, box-shadow .16s ease;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:rgba(255,255,255,.14);font-size:.92rem;"><i class="bi bi-chat-dots-fill"></i></span>
+            <span style="font-weight:700;letter-spacing:.01em;font-size:.88rem;">Support</span>
+            <span style="display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.18);font-size:.66rem;letter-spacing:.04em;">AI</span>
+          </button>
+        </div>
+      </section>
+    `;
+  }
+
+  function getAuthAssistantReply(question) {
+    const query = String(question || '').toLowerCase();
+
+    if (!query.trim()) {
+      return 'Please type a question and I will help with registration, visitor flow, roles, security screening, analytics, or reporting.';
+    }
+    if (query.includes('register') || query.includes('sign up') || query.includes('create account')) {
+      return 'To register, switch to the Register tab, enter your full name, email, role, and a strong password, then submit. Accounts stay local to this browser session only.';
+    }
+    if (query.includes('visitor') || query.includes('check-in') || query.includes('check in') || query.includes('badge')) {
+      return 'Visitor flow is handled by the Receptionist and Operations views. You can check in visitors, print badges, notify hosts, and track duration from arrival to departure.';
+    }
+    if (query.includes('security') || query.includes('blacklist') || query.includes('incident')) {
+      return 'Security staff can monitor incidents, flag visitors, review blacklists, and track response times from the Security dashboard.';
+    }
+    if (query.includes('analytics') || query.includes('report') || query.includes('dashboard') || query.includes('metrics')) {
+      return 'The system includes analytics cards, queue views, activity timelines, and report/export tools so you can monitor trends and operational performance.';
+    }
+    if (query.includes('role') || query.includes('admin') || query.includes('receptionist') || query.includes('operations')) {
+      return 'Choose a role based on your workflow: Admin for control and approvals, Receptionist for front-desk check-in, Security for monitoring, and Operations for reporting and coordination.';
+    }
+    return 'I can help with visitor registration, badge printing, appointment handling, security screening, analytics, reports, and role selection. Ask me anything specific about the system.';
+  }
+
+  function pushAuthChatMessage(role, text) {
+    state.authChat.messages.push({ role, text, time: new Date() });
+    if (state.authChat.messages.length > 18) {
+      state.authChat.messages.shift();
+    }
+  }
+
+  function scrollAuthChatToBottom() {
+    const container = document.querySelector('[data-auth-chat-scroll]');
+    if (!container) return;
+    container.scrollTop = container.scrollHeight;
+  }
+
   function bindAuthEvents() {
     document.querySelectorAll('[data-auth-switch]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -564,6 +676,40 @@
         routeTo('login');
       });
     });
+
+    document.querySelectorAll('[data-chat-suggest]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const question = btn.getAttribute('data-chat-suggest') || '';
+        const input = document.getElementById('auth-chat-question');
+        if (input) input.value = question;
+        document.getElementById('auth-chat-form')?.requestSubmit?.();
+      });
+    });
+
+    document.querySelectorAll('[data-chat-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = btn.getAttribute('data-chat-toggle');
+        state.authChat.open = action === 'open';
+        renderAuth();
+        requestAnimationFrame(scrollAuthChatToBottom);
+      });
+    });
+
+    const authChatForm = document.getElementById('auth-chat-form');
+    if (authChatForm) {
+      authChatForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = authChatForm.question;
+        const question = input.value.trim();
+        if (!question) return;
+
+        pushAuthChatMessage('user', question);
+        pushAuthChatMessage('assistant', getAuthAssistantReply(question));
+        input.value = '';
+        renderAuth();
+        requestAnimationFrame(scrollAuthChatToBottom);
+      });
+    }
 
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
@@ -1063,6 +1209,15 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function closeMobileSidebarOnOutsideClick(event) {
