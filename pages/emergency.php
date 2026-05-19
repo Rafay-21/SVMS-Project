@@ -61,9 +61,9 @@ $active_count = (int)($active_row['cnt'] ?? 0);
 
 /* ── Active visitors for snapshot ───────────────────────────── */
 $active_visitors = query_all(
-    "SELECT vl.id, vl.badge_number, vl.check_in_time, vl.person_to_meet,
-            vl.vehicle_number, vl.visitor_type,
-            v.full_name, v.photo_path, v.phone, v.vip,
+    "SELECT vl.id, v.badge_number, vl.check_in_time, vl.host_name AS person_to_meet,
+            vl.vehicle_number, '' AS visitor_type,
+            v.name AS full_name, v.photo_path, v.phone, 0 AS vip,
             COALESCE(d.name,'—') AS dept_name
      FROM visit_log vl
      JOIN visitors v         ON v.id = vl.visitor_id

@@ -12,7 +12,7 @@ $page_title    = 'Appointments';
 $page_extra_js = ['calendar.js'];
 
 $departments = query_all("SELECT id, name, COALESCE(colour,'#2e75b6') AS colour FROM departments WHERE is_active=1 ORDER BY name");
-$is_super    = role_slug() === 'super_admin';
+$is_super    = role_slug((int)($_SESSION['role_id'] ?? 0)) === 'super_admin';
 
 include __DIR__ . '/../includes/header.php';
 ?>

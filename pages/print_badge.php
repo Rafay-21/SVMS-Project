@@ -17,8 +17,8 @@ if (!$visit_log_id) {
 
 // Load visit data for the display
 $visit = query_one(
-    "SELECT vl.id, vl.badge_number, vl.person_to_meet, vl.check_in_time, vl.status,
-            v.full_name, v.phone, v.photo_path, v.qr_token,
+    "SELECT vl.id, v.badge_number, vl.host_name AS person_to_meet, vl.check_in_time, vl.status,
+            v.name AS full_name, v.phone, v.photo_path, v.qr_token,
             COALESCE(d.name,'—') AS dept_name
      FROM visit_log vl
      JOIN visitors v         ON v.id = vl.visitor_id

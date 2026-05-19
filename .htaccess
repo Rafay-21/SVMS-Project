@@ -5,9 +5,6 @@ ServerSignature Off
 # ── Rewrite Engine ────────────────────────────────────────────────────────────
 RewriteEngine On
 
-# Route legacy page entrypoints to the prototype shell
-RewriteRule ^pages/(login|dashboard|register_visitor|checkin_checkout|appointments|analytics|blacklist|profile|users|settings|notifications|email_queue|backup|audit_log|feedback_view|feedback_public|emergency|visitor_history|visitor_detail|print_badge|custom_fields|verify_otp)\.php$ /svms/index.php [L,QSA]
-
 # Force HTTPS in production — uncomment on live server (remove for localhost)
 # RewriteCond %{HTTPS} off
 # RewriteCond %{REQUEST_URI} !^/\.well-known/
@@ -61,7 +58,7 @@ ErrorDocument 403 /svms/404.php
 
     # Content Security Policy
     # Tune the CDN allowlist to match actual external resources used.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self';"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://chart.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https://chart.googleapis.com; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self';"
 
     # Remove server banner
     Header unset X-Powered-By

@@ -7,6 +7,8 @@
 
 $_current_page = basename($_SERVER['PHP_SELF']);
 
+if (!function_exists('nav_link')):
+
 /**
  * Render a single sidebar nav-link, or nothing if the user lacks $permission.
  */
@@ -32,6 +34,8 @@ function section_visible(array $permissions): bool {
     }
     return false;
 }
+
+endif; // !function_exists('nav_link')
 ?>
 <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
 
@@ -88,16 +92,23 @@ function section_visible(array $permissions): bool {
     <!-- PROFILE — always visible -->
     <div class="sidebar-section">
       <div class="sidebar-section-label"><?= e(t('nav.section_account')) ?></div>
-      <?php nav_link('profile.php', 'person-circle', t('nav.profile')); ?>
+      <?php nav_link('profile.php',       'person-circle',     t('nav.profile')); ?>
+      <?php nav_link('notifications.php', 'bell-fill',         t('nav.notifications')); ?>
     </div>
 
   </nav>
 
-  <!-- Kiosk Mode shortcut -->
-  <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;">
+  <!-- Bottom actions -->
+  <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;display:flex;flex-direction:column;gap:4px;">
     <a href="<?= BASE_URL ?>kiosk/" class="sidebar-link" style="border-radius:var(--radius-sm);">
       <i class="bi bi-tablet-landscape-fill" aria-hidden="true"></i>
       <span>Kiosk Mode</span>
+    </a>
+    <a href="<?= BASE_URL ?>logout.php" class="sidebar-link"
+       style="border-radius:var(--radius-sm);color:#f87171;"
+       onclick="return confirm('Sign out of SVMS?')">
+      <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+      <span>Sign Out</span>
     </a>
   </div>
 

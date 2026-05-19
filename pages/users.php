@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $uname_try = substr($base_uname, 0, 36) . $suffix++;
             }
             query_exec(
-                'INSERT INTO admins (full_name, username, email, password, role_id, is_active) VALUES (?,?,?,?,?,1)',
+                'INSERT INTO admins (name, username, email, password, role_id, is_active) VALUES (?,?,?,?,?,1)',
                 'ssssi', [$name, $uname_try, $email, $hash, $role_id]
             );
             $new_uid = last_insert_id();
@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('info', 'User deleted.');
         }
     }
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/users.php');
     exit;
 }
@@ -66,10 +67,10 @@ $where = '1=1';
 $params = []; $types = '';
 if ($q) {
     $like = '%' . $q . '%';
-    $where .= ' AND (full_name LIKE ? OR email LIKE ?)';
+    $where .= ' AND (name LIKE ? OR email LIKE ?)';
     $params = [$like, $like]; $types = 'ss';
 }
-$users = query_all("SELECT id, full_name AS name, username, email, role_id, is_active, created_at, last_login_at AS last_login FROM admins WHERE $where ORDER BY created_at DESC", $types, $params);
+$users = query_all("SELECT id, name, username, email, role_id, is_active, created_at, last_login_at AS last_login FROM admins WHERE $where ORDER BY created_at DESC", $types, $params);
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="container">

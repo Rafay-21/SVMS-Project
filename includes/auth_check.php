@@ -7,12 +7,14 @@
 
 // 1. Not logged in at all
 if (!isset($_SESSION['admin_id'])) {
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/login.php?msg=unauthorized');
     exit;
 }
 
 // 2. Two-factor auth pending
 if (ENABLE_2FA && isset($_SESSION['pending_2fa']) && !isset($_SESSION['2fa_verified'])) {
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/verify_otp.php');
     exit;
 }
@@ -22,6 +24,7 @@ $idle_limit = SESSION_LIFETIME_HOURS * 3600;
 if (isset($_SESSION['last_activity']) && (time() - (int)$_SESSION['last_activity']) > $idle_limit) {
     session_unset();
     session_destroy();
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/login.php?msg=session_expired');
     exit;
 }
@@ -38,6 +41,7 @@ if (!isset($_SESSION['session_sig'])) {
 } elseif (!hash_equals((string)$_SESSION['session_sig'], $_sa_sig)) {
     session_unset();
     session_destroy();
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/login.php?msg=session_expired');
     exit;
 }

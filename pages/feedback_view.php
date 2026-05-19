@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/auth_check.php';
-require_permission('view_analytics');
+require_permission('view_feedback');
 $page_title = 'Visitor Feedback';
 
 $per_page = 20;
@@ -13,11 +13,11 @@ $total     = (int)($total_row['cnt'] ?? 0);
 $pages     = max(1, (int)ceil($total / $per_page));
 
 $feedbacks = query_all(
-    'SELECT f.id, f.visit_log_id, f.rating, f.notes, f.source, f.created_at,
-            v.full_name AS visitor_name,
-            vl.badge_number
+    'SELECT f.id, f.visit_id, f.rating, f.comment AS notes, f.source, f.created_at,
+            v.name AS visitor_name,
+            v.badge_number
      FROM feedback f
-     JOIN visit_log vl ON vl.id = f.visit_log_id
+     JOIN visit_log vl ON vl.id = f.visit_id
      JOIN visitors v   ON v.id  = vl.visitor_id
      ORDER BY f.created_at DESC LIMIT ' . $per_page . ' OFFSET ' . $offset
 );
@@ -128,7 +128,7 @@ include __DIR__ . '/../includes/header.php';
               </td>
               <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;"><?= format_datetime($fb['created_at'] ?? '', 'M d, Y') ?></td>
               <td>
-                <a href="<?= BASE_URL ?>pages/visitor_detail.php?id=<?= (int)$fb['visit_log_id'] ?>"
+                <a href="<?= BASE_URL ?>pages/visitor_detail.php?id=<?= (int)$fb['visit_id'] ?>"
                    class="btn btn-sm btn-secondary" title="View visit">
                   <i class="bi bi-eye"></i>
                 </a>

@@ -14,23 +14,23 @@ $active_visits = query_all(
     "SELECT
         vl.id              AS visit_log_id,
         vl.visitor_id,
-        vl.badge_number,
+        v.badge_number,
         vl.check_in_time,
         vl.department_id,
-        vl.person_to_meet,
+        vl.host_name       AS person_to_meet,
         vl.vehicle_number,
-        vl.visitor_type,
-        vl.registered_by,
-        v.full_name,
+        ''                 AS visitor_type,
+        vl.checked_in_by   AS registered_by,
+        v.name             AS full_name,
         v.phone,
         v.photo_path,
-        v.vip,
+        0                  AS vip,
         d.name             AS dept_name,
-        a.full_name        AS registered_by_name
+        a.name             AS registered_by_name
      FROM visit_log vl
      JOIN visitors v   ON v.id  = vl.visitor_id
      LEFT JOIN departments d ON d.id = vl.department_id
-     LEFT JOIN admins a      ON a.id = vl.registered_by
+     LEFT JOIN admins a      ON a.id = vl.checked_in_by
      WHERE vl.status = 'checked_in'
      ORDER BY vl.check_in_time ASC"
 );
@@ -1183,223 +1183,4 @@ var CC = {
 })();
 </script>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
-
-
-$visitor_id = (int)($_GET['visitor_id'] ?? 0);
-$search     = sanitize($_GET['q'] ?? '');
-
-// Handle checkout POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'checkout') {
-    csrf_validate();
-    $vid = (int)($_POST['visit_id'] ?? 0);
-    if ($vid > 0) {
-        query_exec('UPDATE visits SET check_out_time=NOW(), status="checked_out" WHERE id=? AND check_out_time IS NULL', 'i', [$vid]);
-        log_action('checkout', $vid);
-        flash('success', 'Visitor checked out successfully.');
-    }
-    header('Location: ' . BASE_URL . 'pages/checkin_checkout.php');
-    exit;
-}
-
-// Handle check-in POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'checkin') {
-    csrf_validate();
-    $vid  = (int)($_POST['visitor_id'] ?? 0);
-    $host = sanitize($_POST['host'] ?? '');
-    $dept = sanitize($_POST['department'] ?? '');
-    $purp = sanitize($_POST['purpose'] ?? '');
-    if ($vid > 0 && $host && $purp) {
-        $admin_id = (int)$_SESSION['admin_id'];
-        query_exec(
-            'INSERT INTO visits (visitor_id, host_name, department, purpose, check_in_time, status, created_by) VALUES (?,?,?,?,NOW(),"checked_in",?)',
-            'isssi', [$vid, $host, $dept, $purp, $admin_id]
-        );
-        log_action('checkin', $vid);
-        flash('success', 'Visitor checked in successfully.');
-    }
-    header('Location: ' . BASE_URL . 'pages/checkin_checkout.php');
-    exit;
-}
-
-$active_visits = query_all(
-    'SELECT v.id AS visit_id, vis.name, vis.badge_number, vis.photo_path, v.host_name, v.purpose, v.check_in_time
-     FROM visits v JOIN visitors vis ON vis.id = v.visitor_id
-     WHERE v.status = "checked_in" ORDER BY v.check_in_time DESC LIMIT 50'
-);
-
-$pre_visitor = $visitor_id > 0 ? query_one('SELECT * FROM visitors WHERE id=? LIMIT 1', 'i', [$visitor_id]) : null;
-?>
-<div class="container">
-  <div class="page-header">
-    <div>
-      <h1 class="page-title"><i class="bi bi-door-open-fill" style="color:var(--secondary);"></i> Check-In / Check-Out</h1>
-      <p class="page-subtitle">Manage visitor arrivals and departures.</p>
-    </div>
-    <a href="<?= BASE_URL ?>pages/register_visitor.php" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Register New</a>
-  </div>
-
-  <div class="grid-2">
-    <!-- Active Visitors -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"><span class="live-dot"></span>&nbsp; Active Visitors (<?= count($active_visits) ?>)</h3>
-        <form method="GET" action="" style="display:flex;gap:8px;">
-          <div class="search-input">
-            <i class="bi bi-search"></i>
-            <input type="text" name="q" class="form-control form-control" value="<?= e($search) ?>" placeholder="Search…" style="padding-left:34px;font-size:13px;padding-top:7px;padding-bottom:7px;">
-          </div>
-        </form>
-      </div>
-      <?php if (empty($active_visits)): ?>
-        <div class="empty-state">
-          <img src="<?= BASE_URL ?>assets/img/empty-state.svg" width="120" alt="">
-          <h3>No Active Visitors</h3>
-          <p>All visitors have checked out.</p>
-        </div>
-      <?php else: ?>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr><th>Visitor</th><th>Host</th><th>Duration</th><th>Action</th></tr>
-            </thead>
-            <tbody>
-              <?php foreach ($active_visits as $v): ?>
-              <tr>
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <img src="<?= $v['photo_path'] ? BASE_URL . 'assets/uploads/' . e($v['photo_path']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
-                         class="avatar avatar-sm" alt="">
-                    <div>
-                      <div style="font-weight:600;"><?= e($v['name']) ?></div>
-                      <div style="font-size:11px;color:var(--text-muted);"><?= e($v['badge_number']) ?></div>
-                    </div>
-                  </div>
-                </td>
-                <td><?= e($v['host_name']) ?></td>
-                <td><?= time_elapsed($v['check_in_time']) ?></td>
-                <td>
-                  <form method="POST" action="" style="display:inline;">
-                    <?php csrf_field() ?>
-                    <input type="hidden" name="action"   value="checkout">
-                    <input type="hidden" name="visit_id" value="<?= (int)$v['visit_id'] ?>">
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Check out this visitor?')">
-                      <i class="bi bi-box-arrow-right"></i> Check Out
-                    </button>
-                  </form>
-                </td>
-              </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      <?php endif; ?>
-    </div>
-
-    <!-- Check-In Form -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"><i class="bi bi-box-arrow-in-right" style="color:var(--success);"></i> New Check-In</h3>
-      </div>
-      <div class="card-body">
-        <?php if (!$pre_visitor): ?>
-        <div class="form-group">
-          <label>Search Visitor by Name / CNIC / Badge</label>
-          <div class="search-input">
-            <i class="bi bi-search"></i>
-            <input type="text" id="visitor-search-input" class="form-control" placeholder="Start typing…" autocomplete="off" style="padding-left:34px;">
-          </div>
-          <div id="visitor-search-results" style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:4px;display:none;max-height:200px;overflow-y:auto;background:var(--card);"></div>
-        </div>
-        <?php endif; ?>
-
-        <form method="POST" action="" id="checkin-form" <?= !$pre_visitor ? 'style="display:none;"' : '' ?>>
-          <?php csrf_field() ?>
-          <input type="hidden" name="action" value="checkin">
-          <input type="hidden" name="visitor_id" id="ci-visitor-id" value="<?= $pre_visitor ? (int)$pre_visitor['id'] : '' ?>">
-
-          <?php if ($pre_visitor): ?>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-alt);border-radius:var(--radius-sm);margin-bottom:16px;">
-            <img src="<?= $pre_visitor['photo_path'] ? BASE_URL . 'assets/uploads/' . e($pre_visitor['photo_path']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
-                 class="avatar" alt="">
-            <div>
-              <div style="font-weight:600;"><?= e($pre_visitor['name']) ?></div>
-              <div style="font-size:12px;color:var(--text-muted);"><?= e($pre_visitor['badge_number']) ?></div>
-            </div>
-          </div>
-          <?php endif; ?>
-
-          <div id="visitor-preview" style="display:none;padding:12px;background:var(--bg-alt);border-radius:var(--radius-sm);margin-bottom:16px;"></div>
-
-          <div class="form-group">
-            <label for="ci-host">Host Name <span class="required">*</span></label>
-            <input type="text" id="ci-host" name="host" class="form-control" data-rules="required" required>
-          </div>
-          <div class="form-group">
-            <label for="ci-dept">Department</label>
-            <input type="text" id="ci-dept" name="department" class="form-control" placeholder="e.g. HR">
-          </div>
-          <div class="form-group">
-            <label for="ci-purpose">Purpose <span class="required">*</span></label>
-            <select id="ci-purpose" name="purpose" class="form-control" data-rules="required" required>
-              <option value="">Select…</option>
-              <option value="Meeting">Meeting</option>
-              <option value="Interview">Interview</option>
-              <option value="Delivery">Delivery</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Personal">Personal</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-success btn-block">
-            <i class="bi bi-box-arrow-in-right"></i> Confirm Check-In
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  var searchInput  = document.getElementById('visitor-search-input');
-  var searchResults = document.getElementById('visitor-search-results');
-  var form         = document.getElementById('checkin-form');
-  var vidInput     = document.getElementById('ci-visitor-id');
-  var preview      = document.getElementById('visitor-preview');
-
-  if (!searchInput) return;
-
-  searchInput.addEventListener('input', SVMS.debounce(function() {
-    var q = this.value.trim();
-    if (q.length < 2) { searchResults.style.display='none'; return; }
-    SVMS.fetch('/svms/api/search_visitor.php?q=' + encodeURIComponent(q))
-      .then(function(data) {
-        searchResults.innerHTML = '';
-        if (!data || !data.length) {
-          searchResults.innerHTML = '<div style="padding:10px 14px;color:var(--text-muted);font-size:13px;">No visitors found.</div>';
-          searchResults.style.display = 'block';
-          return;
-        }
-        data.forEach(function(v) {
-          var el = document.createElement('div');
-          el.style.cssText = 'padding:10px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--divider);transition:background .1s;';
-          el.innerHTML = '<strong>' + v.name + '</strong> &nbsp;<span style="color:var(--text-muted);">' + v.badge_number + '</span>';
-          el.addEventListener('mouseenter', function(){ this.style.background='var(--bg-alt)'; });
-          el.addEventListener('mouseleave', function(){ this.style.background=''; });
-          el.addEventListener('click', function() {
-            vidInput.value = v.id;
-            preview.innerHTML = '<div style="display:flex;align-items:center;gap:12px;"><img src="' + (v.photo_url || '/svms/assets/img/default-avatar.svg') + '" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" alt=""><div><strong>' + v.name + '</strong><div style="font-size:11px;color:var(--text-muted);">' + v.badge_number + '</div></div></div>';
-            preview.style.display = 'block';
-            form.style.display = 'block';
-            searchResults.style.display = 'none';
-            searchInput.value = v.name;
-          });
-          searchResults.appendChild(el);
-        });
-        searchResults.style.display = 'block';
-      }).catch(function(){});
-  }, 300));
-})();
-</script>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

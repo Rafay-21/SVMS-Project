@@ -1241,18 +1241,6 @@
     routeTo('login');
   }
 
-  function formatTimeShort() {
-    return new Intl.DateTimeFormat('en', { hour: 'numeric', minute: '2-digit' }).format(new Date());
-  }
-
-  function formatLongDate() {
-    return new Intl.DateTimeFormat('en', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date());
-  }
-
   window.addEventListener('hashchange', render);
   window.addEventListener('load', () => {
     if (!location.hash) {

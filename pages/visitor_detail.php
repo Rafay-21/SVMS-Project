@@ -38,23 +38,23 @@ $visit = query_one(
         vl.id              AS visit_log_id,
         vl.visitor_id,
         vl.department_id,
-        vl.person_to_meet,
+        vl.host_name       AS person_to_meet,
         vl.purpose,
         vl.vehicle_number,
-        vl.badge_number,
-        vl.visitor_type,
+        v.badge_number,
+        ''                 AS visitor_type,
         vl.check_in_time,
         vl.check_out_time,
         vl.status,
         vl.registered_by,
-        v.full_name,
+        v.name             AS full_name,
         v.cnic,
         v.phone,
         v.email,
         v.photo_path,
-        v.vip,
+        COALESCE(v.vip, 0) AS vip,
         v.qr_token,
-        v.custom_data,
+        v.notes            AS custom_data,
         v.created_at       AS visitor_since,
         COALESCE(d.name,'—')        AS dept_name,
         CASE WHEN vl.registered_by IS NULL OR vl.registered_by = 0 THEN 'Self-Service Kiosk'
@@ -131,9 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         query_exec(
-            "UPDATE visit_log SET department_id=?, person_to_meet=?, purpose=?, vehicle_number=?, visitor_type=?, status=? WHERE id=?",
-            'ississi',
-            [$upd_dept ?: null, $upd_person, $upd_purpose, $upd_vehicle ?: null, $upd_type, $upd_status, $visit_log_id]
+            "UPDATE visit_log SET department_id=?, host_name=?, purpose=?, vehicle_number=?, status=? WHERE id=?",
+            'isssi',
+            [$upd_dept ?: null, $upd_person, $upd_purpose, $upd_vehicle ?: null, $upd_status, $visit_log_id]
         );
 
         if ($diff) {
@@ -164,12 +164,13 @@ $total_visits = (int)($total_visits_row['cnt'] ?? 0);
 
 /* ── Full visit timeline for this visitor ────────────────────── */
 $all_visits = query_all(
-    "SELECT vl.id, vl.department_id, vl.person_to_meet, vl.purpose,
-            vl.check_in_time, vl.check_out_time, vl.status, vl.badge_number,
+    "SELECT vl.id, vl.department_id, vl.host_name AS person_to_meet, vl.purpose,
+            vl.check_in_time, vl.check_out_time, vl.status, v.badge_number,
             COALESCE(d.name,'—') AS dept_name,
             TIMESTAMPDIFF(MINUTE, vl.check_in_time,
                 COALESCE(vl.check_out_time, NOW())) AS duration_min
      FROM visit_log vl
+     JOIN visitors v ON v.id = vl.visitor_id
      LEFT JOIN departments d ON d.id = vl.department_id
      WHERE vl.visitor_id = ?
      ORDER BY vl.check_in_time DESC",
@@ -178,9 +179,9 @@ $all_visits = query_all(
 
 /* ── Feedback for this specific visit ────────────────────────── */
 $feedback = query_one(
-    "SELECT f.rating, f.notes, f.created_at, COALESCE(a.full_name,'—') AS by_name
-     FROM feedback f LEFT JOIN admins a ON a.id = f.created_by
-     WHERE f.visit_log_id = ?
+    "SELECT f.rating, f.comment AS notes, f.created_at, f.source AS by_name
+     FROM feedback f
+     WHERE f.visit_id = ?
      LIMIT 1",
     'i', [$visit_log_id]
 );
@@ -851,105 +852,4 @@ body.vd-editing #btn-save-row { display:flex; }
 })();
 </script>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
-
-
-$id = (int)($_GET['id'] ?? 0);
-if (!$id) { header('Location: ' . BASE_URL . 'pages/visitor_history.php'); exit; }
-
-$visitor = query_one('SELECT * FROM visitors WHERE id=? LIMIT 1', 'i', [$id]);
-if (!$visitor) { http_response_code(404); include __DIR__ . '/../404.php'; exit; }
-
-$visits = query_all(
-    'SELECT * FROM visits WHERE visitor_id=? ORDER BY check_in_time DESC LIMIT 20', 'i', [$id]
-);
-
-$page_title = 'Visitor: ' . htmlspecialchars($visitor['name'], ENT_QUOTES, 'UTF-8');
-include __DIR__ . '/../includes/header.php';
-?>
-<div class="container">
-  <div class="page-header">
-    <div>
-      <h1 class="page-title"><i class="bi bi-person-lines-fill" style="color:var(--secondary);"></i> Visitor Detail</h1>
-      <p class="page-subtitle">Complete visitor profile and visit history.</p>
-    </div>
-    <a href="<?= BASE_URL ?>pages/visitor_history.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-  </div>
-
-  <div class="grid-2">
-    <!-- Profile card -->
-    <div class="card">
-      <div class="card-body" style="text-align:center;padding:32px;">
-        <img src="<?= $visitor['photo_path'] ? BASE_URL . 'assets/uploads/' . e($visitor['photo_path']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
-             style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--secondary);margin-bottom:16px;" alt="">
-        <h2 style="margin-bottom:4px;"><?= e($visitor['name']) ?></h2>
-        <p style="color:var(--text-muted);margin-bottom:16px;font-family:var(--font-mono);letter-spacing:1px;"><?= e($visitor['badge_number']) ?></p>
-        <div class="badge-preview" style="margin-bottom:16px;">
-          <img src="<?= BASE_URL ?>assets/img/qr-icon.svg" width="60" alt="QR Code" style="opacity:.6;">
-        </div>
-        <a href="<?= BASE_URL ?>pages/checkin_checkout.php?visitor_id=<?= $id ?>" class="btn btn-success">
-          <i class="bi bi-box-arrow-in-right"></i> Check In
-        </a>
-      </div>
-      <div class="card-footer">
-        <dl style="display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:var(--text-sm);">
-          <dt style="color:var(--text-muted);font-weight:500;">CNIC</dt>
-          <dd><?= e($visitor['cnic']) ?: '—' ?></dd>
-          <dt style="color:var(--text-muted);font-weight:500;">Phone</dt>
-          <dd><?= e($visitor['phone']) ?: '—' ?></dd>
-          <dt style="color:var(--text-muted);font-weight:500;">Email</dt>
-          <dd><?= e($visitor['email']) ?: '—' ?></dd>
-          <dt style="color:var(--text-muted);font-weight:500;">Vehicle</dt>
-          <dd><?= e($visitor['vehicle_number']) ?: '—' ?></dd>
-          <dt style="color:var(--text-muted);font-weight:500;">Items</dt>
-          <dd><?= e($visitor['items_carried']) ?: '—' ?></dd>
-          <dt style="color:var(--text-muted);font-weight:500;">First Visit</dt>
-          <dd><?= format_datetime($visitor['created_at'], 'M d, Y') ?></dd>
-        </dl>
-      </div>
-    </div>
-
-    <!-- Visit timeline -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"><i class="bi bi-clock-history" style="color:var(--secondary);"></i> Visit History (<?= count($visits) ?>)</h3>
-      </div>
-      <?php if (empty($visits)): ?>
-        <div class="empty-state">
-          <img src="<?= BASE_URL ?>assets/img/empty-state.svg" width="100" alt="">
-          <h3>No Visits Yet</h3>
-        </div>
-      <?php else: ?>
-        <div class="card-body" style="max-height:500px;overflow-y:auto;">
-          <div class="timeline">
-            <?php foreach ($visits as $v): ?>
-            <div class="timeline-item">
-              <div class="timeline-icon <?= $v['status'] === 'checked_in' ? 'success' : '' ?>">
-                <i class="bi bi-<?= $v['status'] === 'checked_in' ? 'door-open-fill' : 'check-lg' ?>"></i>
-              </div>
-              <div class="timeline-content">
-                <div style="font-weight:600;font-size:var(--text-sm);">
-                  <?= e($v['purpose']) ?> — <?= e($v['host_name']) ?>
-                </div>
-                <div style="font-size:var(--text-xs);color:var(--text-muted);">
-                  <?= format_datetime($v['check_in_time'], 'M d, Y g:i A') ?>
-                  <?php if ($v['check_out_time']): ?>
-                    → <?= format_datetime($v['check_out_time'], 'g:i A') ?>
-                    &nbsp;(<?= time_elapsed($v['check_in_time'], $v['check_out_time']) ?>)
-                  <?php else: ?>
-                    &nbsp;<span class="badge badge-success" style="font-size:10px;">Active</span>
-                  <?php endif; ?>
-                </div>
-                <?php if ($v['department']): ?>
-                  <div style="font-size:var(--text-xs);color:var(--text-muted);"><?= e($v['department']) ?></div>
-                <?php endif; ?>
-              </div>
-            </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-      <?php endif; ?>
-    </div>
-  </div>
-</div>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

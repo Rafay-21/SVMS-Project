@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = sanitize($_POST['email'] ?? '');
         if (!$name) { flash('error', 'Name is required.'); }
         else {
-            query_exec('UPDATE admins SET full_name=?, email=? WHERE id=?', 'ssi', [$name, $email, $admin_id]);
+            query_exec('UPDATE admins SET name=?, email=? WHERE id=?', 'ssi', [$name, $email, $admin_id]);
             $_SESSION['admin_name'] = $name;
             log_action('profile_update', $admin_id);
             flash('success', 'Profile updated successfully.');
@@ -43,11 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('success', 'Password changed successfully.');
         }
     }
+    ob_end_clean();
     header('Location: ' . BASE_URL . 'pages/profile.php');
     exit;
 }
 
-$admin = query_one('SELECT id, full_name, email, role_id, created_at, last_login_at FROM admins WHERE id=? LIMIT 1', 'i', [(int)$_SESSION['admin_id']]);
+$admin = query_one('SELECT id, name AS full_name, email, role_id, created_at, last_login_at FROM admins WHERE id=? LIMIT 1', 'i', [(int)$_SESSION['admin_id']]);
 include __DIR__ . '/../includes/header.php';
 ?>
 <div class="container" style="max-width:900px;">
@@ -67,7 +68,7 @@ include __DIR__ . '/../includes/header.php';
           <?php csrf_field() ?>
           <input type="hidden" name="action" value="update_profile">
           <div style="text-align:center;margin-bottom:24px;">
-            <img src="<?= $_SESSION['admin_avatar'] ? BASE_URL . 'assets/uploads/' . e($_SESSION['admin_avatar']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
+            <img src="<?= !empty($_SESSION['admin_avatar']) ? BASE_URL . 'assets/uploads/' . e($_SESSION['admin_avatar']) : BASE_URL . 'assets/img/default-avatar.svg' ?>"
                  style="width:90px;height:90px;border-radius:50%;border:3px solid var(--secondary);object-fit:cover;" alt="">
             <div style="margin-top:8px;font-weight:600;"><?= e($admin['full_name'] ?? '') ?></div>
             <div style="font-size:var(--text-sm);color:var(--text-muted);"><?= e(role_label((int)($admin['role_id'] ?? 0))) ?></div>

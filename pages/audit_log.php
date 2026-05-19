@@ -22,7 +22,8 @@ $date_to   = trim($_GET['date_to']      ?? date('Y-m-d'));
 $entity_f  = trim($_GET['entity_id']    ?? '');
 $search_f  = trim($_GET['q']            ?? '');
 $sort_dir  = strtoupper($_GET['dir'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
-$page_size = in_array((int)($_GET['per_page'] ?? 25), [25,50,100]) ? (int)$_GET['per_page'] : 25;
+$_al_ps_raw = (int)($_GET['per_page'] ?? 25);
+$page_size  = in_array($_al_ps_raw, [25, 50, 100]) ? $_al_ps_raw : 25;
 $page_num  = max(1, (int)($_GET['page'] ?? 1));
 
 /* ── WHERE clause ─────────────────────────────────────────── */
@@ -443,102 +444,4 @@ include __DIR__ . '/../includes/header.php';
 })();
 </script>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
-$page_title = 'Audit Log';
-
-$per_page = 30;
-$page_num = max(1, (int)($_GET['page'] ?? 1));
-$offset   = ($page_num - 1) * $per_page;
-$q        = sanitize($_GET['q'] ?? '');
-
-$where  = '1=1';
-$params = [];
-$types  = '';
-if ($q) {
-    $like    = '%' . $q . '%';
-    $where  .= ' AND (action LIKE ? OR details LIKE ?)';
-    $params  = [$like, $like];
-    $types   = 'ss';
-}
-
-$total_row = query_one("SELECT COUNT(*) cnt FROM audit_logs WHERE $where", $types, $params);
-$total     = (int)($total_row['cnt'] ?? 0);
-$pages     = max(1, (int)ceil($total / $per_page));
-
-$logs = query_all(
-    "SELECT al.*, a.full_name AS admin_name FROM audit_logs al
-     LEFT JOIN admins a ON a.id = al.admin_id
-     WHERE $where ORDER BY al.created_at DESC LIMIT $per_page OFFSET $offset",
-    $types, $params
-);
-
-include __DIR__ . '/../includes/header.php';
-?>
-<div class="container">
-  <div class="page-header">
-    <div>
-      <h1 class="page-title"><i class="bi bi-journal-text" style="color:var(--secondary);"></i> Audit Log</h1>
-      <p class="page-subtitle">Read-only record of all system actions.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Log Entries (<?= $total ?>)</h3>
-      <form method="GET" action="" style="display:flex;gap:8px;">
-        <div class="search-input">
-          <i class="bi bi-search"></i>
-          <input type="text" name="q" class="form-control" value="<?= e($q) ?>" placeholder="Search action or details…" style="padding-left:34px;font-size:13px;padding-top:7px;padding-bottom:7px;">
-        </div>
-        <button type="submit" class="btn btn-secondary btn-sm"><i class="bi bi-funnel"></i></button>
-        <?php if ($q): ?><a href="?" class="btn btn-secondary btn-sm">Clear</a><?php endif; ?>
-      </form>
-    </div>
-
-    <?php if (empty($logs)): ?>
-      <div class="empty-state">
-        <img src="<?= BASE_URL ?>assets/img/empty-state.svg" width="120" alt="">
-        <h3>No Log Entries</h3>
-      </div>
-    <?php else: ?>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Target</th><th>Details</th></tr>
-          </thead>
-          <tbody>
-            <?php foreach ($logs as $log): ?>
-            <tr>
-              <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;"><?= format_datetime($log['created_at'], 'M d g:i A') ?></td>
-              <td style="font-size:var(--text-sm);"><?= e($log['admin_name'] ?? 'System') ?></td>
-              <td><span class="badge badge-secondary" style="font-family:var(--font-mono);font-size:11px;"><?= e($log['action']) ?></span></td>
-              <td style="font-size:12px;color:var(--text-muted);"><?= $log['target_id'] ? '#' . (int)$log['target_id'] : '—' ?></td>
-              <td style="font-size:12px;color:var(--text-muted);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="<?= e($log['details'] ?? '') ?>">
-                <?= e($log['details'] ?? '—') ?>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-
-      <?php if ($pages > 1): ?>
-      <div class="card-footer" style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:var(--text-sm);color:var(--text-muted);">Page <?= $page_num ?> of <?= $pages ?></span>
-        <nav class="pagination" aria-label="Pagination">
-          <?php if ($page_num > 1): ?>
-            <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $page_num - 1])) ?>"><i class="bi bi-chevron-left"></i></a>
-          <?php endif; ?>
-          <?php for ($i = max(1, $page_num-2); $i <= min($pages, $page_num+2); $i++): ?>
-            <a class="page-link <?= $i === $page_num ? 'active' : '' ?>" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"><?= $i ?></a>
-          <?php endfor; ?>
-          <?php if ($page_num < $pages): ?>
-            <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $page_num + 1])) ?>"><i class="bi bi-chevron-right"></i></a>
-          <?php endif; ?>
-        </nav>
-      </div>
-      <?php endif; ?>
-    <?php endif; ?>
-  </div>
-</div>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

@@ -18,7 +18,8 @@ $vip_f      = isset($_GET['vip']) ? 1 : 0;
 $search_f   = trim($_GET['q']          ?? '');
 $sort_col   = trim($_GET['sort']       ?? 'check_in_time');
 $sort_dir   = strtoupper(trim($_GET['dir'] ?? 'DESC')) === 'ASC' ? 'ASC' : 'DESC';
-$page_size  = in_array((int)($_GET['per_page'] ?? 25), [25, 50, 100]) ? (int)$_GET['per_page'] : 25;
+$_ps_raw    = (int)($_GET['per_page'] ?? 25);
+$page_size  = in_array($_ps_raw, [25, 50, 100]) ? $_ps_raw : 25;
 $page_num   = max(1, (int)($_GET['page'] ?? 1));
 
 // Whitelist sortable columns

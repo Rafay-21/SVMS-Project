@@ -7,8 +7,8 @@
 /**
  * Escape output — htmlspecialchars wrapper.
  */
-function e(string $s): string {
-    return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+function e(?string $s): string {
+    return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8');
 }
 
 /**

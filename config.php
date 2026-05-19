@@ -1,4 +1,7 @@
 <?php
+// Buffer output so BOM bytes in included files don't prevent header() calls.
+ob_start();
+
 /**
  * SVMS Configuration File — Version 2.0
  * ======================================
@@ -35,16 +38,17 @@
  *   DEFAULT_THEME            — Fallback colour theme (light|dark)
  */
 
-// ── Database ─────────────────────────────────────────────────────────────────
-define('DB_HOST',    'localhost');
-define('DB_USER',    'root');
-define('DB_PASS',    '');
-define('DB_NAME',    'svms_db');
+// ── Database (env vars override defaults for Docker / production) ──────────────
+define('DB_HOST',    getenv('DB_HOST')    ?: 'localhost');
+define('DB_USER',    getenv('DB_USER')    ?: 'root');
+define('DB_PASS',    getenv('DB_PASS')    ?: '');
+define('DB_NAME',    getenv('DB_NAME')    ?: 'svms_db');
 define('DB_CHARSET', 'utf8mb4');
 
 // ── Application ───────────────────────────────────────────────────────────────
-define('SITE_NAME',   'Smart Visitor Management System');
-define('BASE_URL',    'http://localhost/svms/');
+define('SITE_NAME',   getenv('SITE_NAME') ?: 'Smart Visitor Management System');
+define('BASE_URL',    getenv('BASE_URL')  ?: 'http://localhost/svms/');
+define('APP_PATH',    getenv('APP_PATH')  ?: '/svms/');
 define('UPLOAD_DIR',  __DIR__ . '/assets/uploads/');
 define('LOG_DIR',     __DIR__ . '/logs');
 
@@ -109,20 +113,19 @@ ini_set('log_errors', 1);
 ini_set('error_log',  LOG_DIR . '/php_errors.log');
 
 // ── Session Configuration ────────────────────────────────────────────────────
-$_svms_is_https = (!IS_DEV && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path'     => '/svms/',
-    'domain'   => '',
-    'secure'   => $_svms_is_https,
-    'httponly' => true,
-    'samesite' => 'Strict',
-]);
-unset($_svms_is_https);
-ini_set('session.use_strict_mode', 1);
-session_name('SVMS_SESSID');
-
 if (session_status() === PHP_SESSION_NONE) {
+    $_svms_is_https = (!IS_DEV && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => APP_PATH,
+        'domain'   => '',
+        'secure'   => $_svms_is_https,
+        'httponly' => true,
+        'samesite' => 'Strict',
+    ]);
+    unset($_svms_is_https);
+    ini_set('session.use_strict_mode', 1);
+    session_name('SVMS_SESSID');
     session_start();
 }
 
