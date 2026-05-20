@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 150" fill="none">
+  <defs>
+    <pattern id="ddots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="0.6" fill="rgba(255,255,255,0.06)"/>
+    </pattern>
+  </defs>
+  <rect width="380" height="150" fill="url(#ddots)"/>
+
+  <!-- ── LEFT: Building ── -->
+  <rect x="8" y="6" width="88" height="120" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <!-- Roof detail -->
+  <rect x="34" y="2" width="36" height="6" rx="2" fill="rgba(255,255,255,0.06)"/>
+  <!-- Windows row 1 -->
+  <rect x="16" y="15" width="12" height="9" rx="2" fill="rgba(0,180,216,0.30)"/>
+  <rect x="33" y="15" width="12" height="9" rx="2" fill="rgba(255,255,255,0.10)"/>
+  <rect x="50" y="15" width="12" height="9" rx="2" fill="rgba(0,180,216,0.38)"/>
+  <rect x="67" y="15" width="12" height="9" rx="2" fill="rgba(255,255,255,0.08)"/>
+  <!-- Windows row 2 -->
+  <rect x="16" y="31" width="12" height="9" rx="2" fill="rgba(255,255,255,0.10)"/>
+  <rect x="33" y="31" width="12" height="9" rx="2" fill="rgba(0,180,216,0.32)"/>
+  <rect x="50" y="31" width="12" height="9" rx="2" fill="rgba(255,255,255,0.08)"/>
+  <rect x="67" y="31" width="12" height="9" rx="2" fill="rgba(0,180,216,0.26)"/>
+  <!-- Windows row 3 -->
+  <rect x="16" y="47" width="12" height="9" rx="2" fill="rgba(0,180,216,0.24)"/>
+  <rect x="33" y="47" width="12" height="9" rx="2" fill="rgba(255,255,255,0.08)"/>
+  <rect x="50" y="47" width="12" height="9" rx="2" fill="rgba(0,180,216,0.32)"/>
+  <rect x="67" y="47" width="12" height="9" rx="2" fill="rgba(255,255,255,0.10)"/>
+  <!-- Windows row 4 -->
+  <rect x="16" y="63" width="12" height="9" rx="2" fill="rgba(255,255,255,0.08)"/>
+  <rect x="33" y="63" width="12" height="9" rx="2" fill="rgba(0,180,216,0.28)"/>
+  <rect x="50" y="63" width="12" height="9" rx="2" fill="rgba(255,255,255,0.10)"/>
+  <rect x="67" y="63" width="12" height="9" rx="2" fill="rgba(0,180,216,0.35)"/>
+  <!-- Entrance -->
+  <rect x="38" y="90" width="28" height="36" rx="2" fill="rgba(0,180,216,0.08)" stroke="rgba(0,180,216,0.20)" stroke-width="1"/>
+  <line x1="52" y1="90" x2="52" y2="126" stroke="rgba(0,180,216,0.15)" stroke-width="1"/>
+  <path d="M24 90 L80 90 L77 94 L27 94 Z" fill="rgba(0,180,216,0.12)" stroke="rgba(0,180,216,0.26)" stroke-width="1"/>
+
+  <!-- ── Visitor flow arrows ── -->
+  <!-- Person 1 (walking in) -->
+  <circle cx="118" cy="88" r="8" fill="rgba(46,117,182,0.45)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <path d="M110 112 Q110 102 118 100 Q126 102 126 112" fill="rgba(46,117,182,0.28)"/>
+  <!-- Arrow -->
+  <path d="M100 100 L111 100" stroke="rgba(0,180,216,0.72)" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M106 95 L112 100 L106 105" fill="none" stroke="rgba(0,180,216,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Person 2 (at desk) -->
+  <circle cx="138" cy="88" r="8" fill="rgba(0,180,216,0.38)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <path d="M130 112 Q130 102 138 100 Q146 102 146 112" fill="rgba(0,180,216,0.22)"/>
+
+  <!-- ── CENTER: Reception ── -->
+  <rect x="155" y="100" width="105" height="16" rx="3" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.13)" stroke-width="1.5"/>
+  <!-- Kiosk -->
+  <rect x="198" y="76" width="16" height="24" rx="3" fill="rgba(46,117,182,0.52)" stroke="rgba(0,180,216,0.75)" stroke-width="1.5"/>
+  <rect x="201" y="79" width="10" height="12" rx="1.5" fill="rgba(255,255,255,0.92)"/>
+  <rect x="202.5" y="80.5" width="3"   height="3"   rx="0.4" fill="#1a3c5e"/>
+  <rect x="207"   y="80.5" width="3"   height="3"   rx="0.4" fill="#1a3c5e"/>
+  <rect x="202.5" y="85"   width="3"   height="3"   rx="0.4" fill="#1a3c5e"/>
+  <rect x="207"   y="84.5" width="1.5" height="1.5" fill="#1a3c5e"/>
+  <rect x="207"   y="87"   width="1.5" height="1.5" fill="#1a3c5e"/>
+  <rect x="209.5" y="86"   width="1.5" height="1.5" fill="#1a3c5e"/>
+  <!-- Staff -->
+  <circle cx="172" cy="82" r="9" fill="rgba(46,117,182,0.45)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <path d="M163 106 Q163 94 172 92 Q181 94 181 106" fill="rgba(46,117,182,0.28)"/>
+  <!-- Visitor at kiosk -->
+  <circle cx="226" cy="82" r="9" fill="rgba(0,180,216,0.38)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <path d="M217 106 Q217 94 226 92 Q235 94 235 106" fill="rgba(0,180,216,0.22)"/>
+
+  <!-- Floating badge -->
+  <rect x="152" y="50" width="20" height="26" rx="3" fill="rgba(0,180,216,0.18)" stroke="rgba(0,180,216,0.52)" stroke-width="1.5"/>
+  <circle cx="162" cy="61" r="5" fill="rgba(255,255,255,0.20)"/>
+  <rect x="154" y="68" width="16" height="2" rx="1" fill="rgba(255,255,255,0.45)"/>
+  <rect x="156" y="72" width="10" height="1.5" rx="0.75" fill="rgba(0,180,216,0.55)"/>
+  <path d="M162 50 Q162 42 175 38" stroke="rgba(0,180,216,0.28)" stroke-width="1.2" stroke-dasharray="2,2" fill="none"/>
+
+  <!-- Check-in notification card -->
+  <rect x="237" y="58" width="90" height="28" rx="8" fill="rgba(0,180,216,0.15)" stroke="rgba(0,180,216,0.52)" stroke-width="1"/>
+  <circle cx="253" cy="72" r="9" fill="rgba(0,180,216,0.45)" stroke="rgba(0,180,216,0.88)" stroke-width="1"/>
+  <path d="M248 72 l3.5 3.5 l7.5-7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="267" y="69" font-family="Arial,Helvetica,sans-serif" font-size="6" font-weight="700" fill="rgba(255,255,255,0.75)">Checked In</text>
+  <text x="267" y="79" font-family="Arial,Helvetica,sans-serif" font-size="5" fill="rgba(0,180,216,0.82)">Access granted · Now</text>
+
+  <!-- ── RIGHT: Analytics bars ── -->
+  <line x1="272" y1="6"   x2="272" y2="118" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+  <line x1="272" y1="118" x2="374" y2="118" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+  <rect x="276" y="82"  width="12" height="36" rx="2" fill="rgba(0,180,216,0.28)"/>
+  <rect x="292" y="65"  width="12" height="53" rx="2" fill="rgba(0,180,216,0.40)"/>
+  <rect x="308" y="45"  width="12" height="73" rx="2" fill="rgba(0,180,216,0.58)"/>
+  <rect x="324" y="57"  width="12" height="61" rx="2" fill="rgba(0,180,216,0.44)"/>
+  <rect x="340" y="32"  width="12" height="86" rx="2" fill="rgba(0,180,216,0.68)"/>
+  <rect x="356" y="50"  width="12" height="68" rx="2" fill="rgba(0,180,216,0.50)"/>
+  <!-- Trend line -->
+  <path d="M282 78 L298 61 L314 41 L330 53 L346 28 L362 46" stroke="rgba(255,255,255,0.55)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <circle cx="282" cy="78" r="2.5" fill="rgba(255,255,255,0.60)"/>
+  <circle cx="298" cy="61" r="2.5" fill="rgba(255,255,255,0.60)"/>
+  <circle cx="314" cy="41" r="2.5" fill="rgba(255,255,255,0.60)"/>
+  <circle cx="330" cy="53" r="2.5" fill="rgba(255,255,255,0.60)"/>
+  <circle cx="346" cy="28" r="3"   fill="rgba(255,255,255,0.88)"/>
+  <circle cx="362" cy="46" r="2.5" fill="rgba(255,255,255,0.60)"/>
+  <!-- Up arrow at peak -->
+  <path d="M343 22 L347 16 L351 22" fill="rgba(0,180,216,0.65)"/>
+  <line x1="347" y1="16" x2="347" y2="28" stroke="rgba(0,180,216,0.45)" stroke-width="1.2"/>
+  <text x="289" y="130" font-family="Arial,Helvetica,sans-serif" font-size="5" fill="rgba(255,255,255,0.28)">M   T   W   T   F   S</text>
+
+  <!-- Decorative -->
+  <circle cx="6"   cy="90" r="2.5" fill="rgba(0,180,216,0.10)"/>
+  <circle cx="375" cy="95" r="2.5" fill="rgba(255,255,255,0.07)"/>
+  <circle cx="370" cy="130" r="2" fill="rgba(0,180,216,0.10)"/>
+  <line x1="8"  y1="52" x2="16" y2="52" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <line x1="12" y1="48" x2="12" y2="56" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <line x1="370" y1="14" x2="378" y2="14" stroke="rgba(0,180,216,0.12)" stroke-width="1"/>
+  <line x1="374" y1="10" x2="374" y2="18" stroke="rgba(0,180,216,0.12)" stroke-width="1"/>
+</svg>

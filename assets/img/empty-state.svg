@@ -1,11 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
-  <!-- Ground -->
-  <ellipse cx="120" cy="160" rx="90" ry="10" fill="#e2e8f0"/>
-  <!-- Box -->
-  <rect x="60" y="80" width="120" height="80" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
-  <path d="M60 100 L120 130 L180 100" stroke="#cbd5e1" stroke-width="2" fill="none"/>
-  <line x1="120" y1="80" x2="120" y2="130" stroke="#cbd5e1" stroke-width="2"/>
-  <!-- Question mark -->
-  <circle cx="120" cy="50" r="24" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="120" y="58" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#94a3b8">?</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="120" cy="182" rx="72" ry="8" fill="#e2e8f0"/>
+
+  <!-- Clipboard body -->
+  <rect x="56" y="44" width="120" height="138" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <!-- Header band -->
+  <rect x="56" y="44" width="120" height="28" rx="8" fill="#f1f5f9"/>
+  <rect x="56" y="64" width="120" height="8" rx="0" fill="#f1f5f9"/>
+  <!-- Clip -->
+  <rect x="88" y="36" width="64" height="17" rx="8" fill="#e8ecf1" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="102" y="41" width="36" height="8" rx="4" fill="#cbd5e1"/>
+  <!-- Header icon + line -->
+  <circle cx="80" cy="57" r="6" fill="#cbd5e1"/>
+  <line x1="91" y1="55" x2="156" y2="55" stroke="#dde1e7" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="91" y1="61" x2="138" y2="61" stroke="#e8ecf1" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Row items (faded lines) -->
+  <rect x="66" y="84"  width="10" height="10" rx="3" fill="#e2e8f0"/>
+  <rect x="82" y="86"  width="80" height="6"  rx="3" fill="#e8ecf1"/>
+  <rect x="82" y="95"  width="55" height="4"  rx="2" fill="#eef1f5"/>
+
+  <rect x="66" y="110" width="10" height="10" rx="3" fill="#e8ecf1"/>
+  <rect x="82" y="112" width="72" height="6"  rx="3" fill="#e2e8f0"/>
+  <rect x="82" y="121" width="48" height="4"  rx="2" fill="#eef1f5"/>
+
+  <rect x="66" y="136" width="10" height="10" rx="3" fill="#e2e8f0"/>
+  <rect x="82" y="138" width="64" height="6"  rx="3" fill="#e8ecf1"/>
+  <rect x="82" y="147" width="40" height="4"  rx="2" fill="#eef1f5"/>
+
+  <!-- Magnifying glass backdrop -->
+  <circle cx="145" cy="122" r="38" fill="rgba(255,255,255,0.88)"/>
+  <!-- Glass outer ring -->
+  <circle cx="142" cy="119" r="26" fill="#f1f5f9" stroke="#dde3ec" stroke-width="2.5"/>
+  <!-- Glass inner tint -->
+  <circle cx="142" cy="119" r="26" fill="rgba(46,117,182,0.04)"/>
+  <!-- Person icon inside glass -->
+  <circle cx="142" cy="114" r="6.5" stroke="#94a3b8" stroke-width="2" fill="none"/>
+  <path d="M133 128 Q133 124 142 122 Q151 124 151 128" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Search cross-hair subtle -->
+  <circle cx="142" cy="119" r="14" stroke="#e8ecf1" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Handle -->
+  <line x1="161" y1="138" x2="176" y2="153" stroke="#94a3b8" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="176" cy="153" r="3.5" fill="#94a3b8"/>
+  <!-- Handle shine -->
+  <line x1="165" y1="140" x2="171" y2="146" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
 </svg>

@@ -71,8 +71,81 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="container" id="main-content-inner">
 
+  <!-- ── Welcome banner ──────────────────────────────────────── -->
+  <div style="background:linear-gradient(135deg,var(--primary,#1a3c5e) 0%,#0d2a47 55%,#0a1f36 100%);
+              border-radius:var(--radius-lg,14px);
+              padding:28px 32px;
+              margin-bottom:24px;
+              display:flex;
+              align-items:center;
+              justify-content:space-between;
+              gap:20px;
+              position:relative;
+              overflow:hidden;">
+    <!-- Decorative glow -->
+    <div style="position:absolute;top:-40px;right:160px;width:200px;height:200px;
+                background:radial-gradient(circle,rgba(0,180,216,.18) 0%,transparent 70%);
+                pointer-events:none;"></div>
+
+    <div style="flex:1;min-width:0;position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:10px;
+                    display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.15);flex-shrink:0;">
+          <i class="bi bi-speedometer2" style="font-size:18px;color:#fff;"></i>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;color:#fff;margin:0;letter-spacing:-.3px;">
+          Welcome back, <?= e(explode(' ', $_SESSION['admin_name'] ?? 'Admin')[0]) ?>!
+        </h2>
+      </div>
+      <p style="font-size:13.5px;color:rgba(255,255,255,.65);margin:0 0 18px;line-height:1.5;">
+        <i class="bi bi-calendar3" style="margin-right:5px;opacity:.7;"></i><?= date('l, F j, Y') ?>
+        &nbsp;&bull;&nbsp;
+        <i class="bi bi-person-fill" style="margin-right:5px;opacity:.7;"></i><?= e(role_label((int)($_SESSION['role_id'] ?? 0))) ?>
+        &nbsp;&bull;&nbsp;
+        <span style="color:rgba(0,180,216,.85);font-weight:600;"><?= $stat_active ?> on premises</span>
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <?php if (can('register_visitor')): ?>
+        <a href="<?= BASE_URL ?>pages/register_visitor.php"
+           style="background:rgba(255,255,255,.15);color:#fff;padding:7px 14px;border-radius:8px;
+                  text-decoration:none;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;
+                  border:1px solid rgba(255,255,255,.2);transition:background .15s;"
+           onmouseover="this.style.background='rgba(255,255,255,.24)'"
+           onmouseout="this.style.background='rgba(255,255,255,.15)'">
+          <i class="bi bi-person-plus-fill"></i> Register Visitor
+        </a>
+        <?php endif; ?>
+        <?php if (can('checkin_visitor')): ?>
+        <a href="<?= BASE_URL ?>pages/checkin_checkout.php"
+           style="background:rgba(255,255,255,.15);color:#fff;padding:7px 14px;border-radius:8px;
+                  text-decoration:none;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;
+                  border:1px solid rgba(255,255,255,.2);transition:background .15s;"
+           onmouseover="this.style.background='rgba(255,255,255,.24)'"
+           onmouseout="this.style.background='rgba(255,255,255,.15)'">
+          <i class="bi bi-door-open-fill"></i> Check In / Out
+        </a>
+        <?php endif; ?>
+        <a href="<?= BASE_URL ?>kiosk/"
+           style="background:rgba(0,180,216,.22);color:#00b4d8;padding:7px 14px;border-radius:8px;
+                  text-decoration:none;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;
+                  border:1px solid rgba(0,180,216,.32);transition:background .15s;"
+           onmouseover="this.style.background='rgba(0,180,216,.34)'"
+           onmouseout="this.style.background='rgba(0,180,216,.22)'">
+          <i class="bi bi-tablet-landscape-fill"></i> Kiosk Mode
+        </a>
+      </div>
+    </div>
+
+    <!-- Dashboard hero illustration -->
+    <div style="flex-shrink:0;width:260px;height:130px;display:flex;align-items:center;justify-content:flex-end;position:relative;z-index:1;">
+      <img src="<?= BASE_URL ?>assets/img/dashboard-hero.svg" alt=""
+           style="width:260px;height:auto;opacity:.82;display:block;"
+           loading="eager" aria-hidden="true">
+    </div>
+  </div>
+
   <!-- ── Page header ───────────────────────────────────────────── -->
-  <div class="page-header">
+  <div class="page-header" style="padding-top:0;margin-top:0;">
     <div>
       <h1 class="page-title">
         <i class="bi bi-speedometer2" style="color:var(--secondary);margin-right:8px;"></i>

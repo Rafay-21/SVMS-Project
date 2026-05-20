@@ -119,6 +119,9 @@ $_dir  = is_rtl() ? 'rtl' : 'ltr';
     .auth-feature:last-child{border-bottom:none;}
     .auth-feature i{font-size:16px;opacity:.8;flex-shrink:0;}
     .auth-features{width:100%;max-width:280px;position:relative;}
+    .auth-brand-illustration{width:100%;max-width:290px;margin-top:32px;position:relative;animation:heroFloat 5s ease-in-out infinite;}
+    .auth-brand-illustration img{width:100%;height:auto;display:block;}
+    @keyframes heroFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
     .auth-form-panel{flex:1;background:var(--card);display:flex;align-items:center;justify-content:center;padding:48px 40px;}
     .auth-card{width:100%;max-width:420px;animation:slideIn 350ms cubic-bezier(.16,1,.3,1) both;}
     @keyframes slideIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
@@ -145,7 +148,7 @@ $_dir  = is_rtl() ? 'rtl' : 'ltr';
     .auth-footer a:hover{text-decoration:underline;}
     .forgot-link{display:block;text-align:right;font-size:12px;color:var(--text-muted);margin-top:4px;text-decoration:none;}
     .forgot-link:hover{color:var(--primary);}
-    @media(max-width:768px){.auth-split{flex-direction:column;}.auth-brand{flex:none;height:160px;padding:20px 24px;flex-direction:row;justify-content:flex-start;gap:14px;text-align:left;}.auth-brand .tagline,.auth-features{display:none;}.auth-brand-logo{width:44px;height:44px;border-radius:12px;margin-bottom:0;flex-shrink:0;}.auth-brand-logo i{font-size:22px;}.auth-brand h2{font-size:16px;}.auth-form-panel{padding:28px 20px;}}
+    @media(max-width:768px){.auth-split{flex-direction:column;}.auth-brand{flex:none;height:160px;padding:20px 24px;flex-direction:row;justify-content:flex-start;gap:14px;text-align:left;}.auth-brand .tagline,.auth-features,.auth-brand-illustration{display:none;}.auth-brand-logo{width:44px;height:44px;border-radius:12px;margin-bottom:0;flex-shrink:0;}.auth-brand-logo i{font-size:22px;}.auth-brand h2{font-size:16px;}.auth-form-panel{padding:28px 20px;}}
   </style>
 </head>
 <body>
@@ -161,6 +164,11 @@ $_dir  = is_rtl() ? 'rtl' : 'ltr';
       <div class="auth-feature"><i class="bi bi-qr-code-scan"></i><span>QR-based check-in / check-out</span></div>
       <div class="auth-feature"><i class="bi bi-bar-chart-fill"></i><span>Analytics &amp; reporting</span></div>
       <div class="auth-feature"><i class="bi bi-slash-circle-fill"></i><span>Blacklist &amp; watchlist alerts</span></div>
+    </div>
+
+    <!-- Hero illustration -->
+    <div class="auth-brand-illustration" aria-hidden="true">
+      <img src="<?= BASE_URL ?>assets/img/login-hero.svg" alt="" loading="eager">
     </div>
   </aside>
 
