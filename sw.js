@@ -9,34 +9,34 @@
    ============================================================ */
 
 const CACHE_NAME   = 'svms-v2.0.0';
-const OFFLINE_URL  = '/svms/offline.html';
+const OFFLINE_URL  = '/offline.html';
 const API_TIMEOUT  = 5000; // ms
 
 // ── Pre-cache manifest ─────────────────────────────────────────────────────
 const PRECACHE = [
-  '/svms/offline.html',
-  '/svms/manifest.json',
+  '/offline.html',
+  '/manifest.json',
   // CSS
-  '/svms/assets/css/tokens.css',
-  '/svms/assets/css/base.css',
-  '/svms/assets/css/layout.css',
-  '/svms/assets/css/components.css',
-  '/svms/assets/css/forms.css',
-  '/svms/assets/css/themes.css',
-  '/svms/assets/css/fonts.css',
+  '/assets/css/tokens.css',
+  '/assets/css/base.css',
+  '/assets/css/layout.css',
+  '/assets/css/components.css',
+  '/assets/css/forms.css',
+  '/assets/css/themes.css',
+  '/assets/css/fonts.css',
   // JS
-  '/svms/assets/js/theme.js',
-  '/svms/assets/js/main.js',
-  '/svms/assets/js/i18n.js',
-  '/svms/assets/js/validation.js',
-  '/svms/assets/js/notifications.js',
+  '/assets/js/theme.js',
+  '/assets/js/main.js',
+  '/assets/js/i18n.js',
+  '/assets/js/validation.js',
+  '/assets/js/notifications.js',
   // Images / icons
-  '/svms/assets/img/logo.svg',
-  '/svms/assets/img/default-avatar.svg',
-  '/svms/assets/img/empty-state.svg',
-  '/svms/assets/img/icons/icon-192.png',
-  '/svms/assets/img/icons/icon-512.png',
-  '/svms/assets/img/icons/apple-touch-icon.png',
+  '/assets/img/logo.svg',
+  '/assets/img/default-avatar.svg',
+  '/assets/img/empty-state.svg',
+  '/assets/img/icons/icon-192.png',
+  '/assets/img/icons/icon-512.png',
+  '/assets/img/icons/apple-touch-icon.png',
 ];
 
 // ── Helper: race fetch against a timeout ──────────────────────────────────
@@ -108,7 +108,7 @@ self.addEventListener('fetch', function(event) {
 
   // ── POST: never cache; queue checkout for background sync ──────────────
   if (req.method === 'POST') {
-    if (url.pathname === '/svms/api/checkout.php') {
+    if (url.pathname === '/api/checkout.php') {
       event.respondWith(handleOfflineCheckout(req));
     }
     // All other POSTs: pass through unmodified
@@ -118,13 +118,13 @@ self.addEventListener('fetch', function(event) {
   if (req.method !== 'GET') return;
 
   // ── Notifications page: stale-while-revalidate ─────────────────────────
-  if (url.pathname === '/svms/pages/notifications.php') {
+  if (url.pathname === '/pages/notifications.php') {
     event.respondWith(staleWhileRevalidate(req));
     return;
   }
 
   // ── API: network-first with timeout, cache fallback, offline JSON ──────
-  if (url.pathname.startsWith('/svms/api/')) {
+  if (url.pathname.startsWith('/api/')) {
     event.respondWith(apiStrategy(req));
     return;
   }
@@ -317,9 +317,9 @@ function replayCheckouts() {
  *     event.waitUntil(
  *       self.registration.showNotification(data.title || 'SVMS', {
  *         body:    data.body || '',
- *         icon:    '/svms/assets/img/icons/icon-192.png',
- *         badge:   '/svms/assets/img/icons/icon-192.png',
- *         data:    { url: data.url || '/svms/pages/notifications.php' },
+ *         icon:    '/assets/img/icons/icon-192.png',
+ *         badge:   '/assets/img/icons/icon-192.png',
+ *         data:    { url: data.url || '/pages/notifications.php' },
  *       })
  *     );
  *   });
@@ -334,28 +334,28 @@ function replayCheckouts() {
 
 
 const STATIC_ASSETS = [
-  '/svms/',
-  '/svms/index.php',
-  '/svms/offline.html',
-  '/svms/assets/css/tokens.css',
-  '/svms/assets/css/base.css',
-  '/svms/assets/css/layout.css',
-  '/svms/assets/css/components.css',
-  '/svms/assets/css/forms.css',
-  '/svms/assets/css/dashboard.css',
-  '/svms/assets/css/kiosk.css',
-  '/svms/assets/css/themes.css',
-  '/svms/assets/js/theme.js',
-  '/svms/assets/js/main.js',
-  '/svms/assets/js/validation.js',
-  '/svms/assets/js/dashboard.js',
-  '/svms/assets/js/kiosk.js',
-  '/svms/assets/js/webcam.js',
-  '/svms/assets/js/notifications.js',
-  '/svms/assets/js/i18n.js',
-  '/svms/assets/img/logo.svg',
-  '/svms/assets/img/default-avatar.svg',
-  '/svms/assets/img/empty-state.svg',
+  '/',
+  '/index.php',
+  '/offline.html',
+  '/assets/css/tokens.css',
+  '/assets/css/base.css',
+  '/assets/css/layout.css',
+  '/assets/css/components.css',
+  '/assets/css/forms.css',
+  '/assets/css/dashboard.css',
+  '/assets/css/kiosk.css',
+  '/assets/css/themes.css',
+  '/assets/js/theme.js',
+  '/assets/js/main.js',
+  '/assets/js/validation.js',
+  '/assets/js/dashboard.js',
+  '/assets/js/kiosk.js',
+  '/assets/js/webcam.js',
+  '/assets/js/notifications.js',
+  '/assets/js/i18n.js',
+  '/assets/img/logo.svg',
+  '/assets/img/default-avatar.svg',
+  '/assets/img/empty-state.svg',
 ];
 
 // Install: pre-cache static assets
@@ -394,7 +394,7 @@ self.addEventListener('fetch', function(event) {
   if (event.request.method !== 'GET' || url.origin !== location.origin) return;
 
   // API: network-only (never cache)
-  if (url.pathname.startsWith('/svms/api/')) {
+  if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(event.request).catch(function() {
         return new Response(JSON.stringify({error: 'Offline'}), {

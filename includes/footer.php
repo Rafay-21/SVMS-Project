@@ -57,7 +57,7 @@
 <!-- Service Worker registration -->
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/svms/sw.js').catch(function(){});
+    navigator.serviceWorker.register((window.BASE_URL || '/') + 'sw.js').catch(function(){});
   }
 </script>
 

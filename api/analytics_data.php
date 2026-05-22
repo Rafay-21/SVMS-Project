@@ -352,6 +352,7 @@ if (!$drill_dept && !$drill_purpose) {
 }
 
 echo $payload;
+exit;
 
 
 // Visitor trend (daily check-ins)

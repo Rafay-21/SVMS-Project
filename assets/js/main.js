@@ -249,7 +249,7 @@
       const q = input.value.trim();
       if (q.length < 2) { results.classList.remove('open'); return; }
 
-      SVMS.fetch('/svms/api/smart_search.php?q=' + encodeURIComponent(q))
+      SVMS.fetch((window.BASE_URL || '/') + 'api/smart_search.php?q=' + encodeURIComponent(q))
         .then(function (data) {
           results.innerHTML = '';
           if (!data || !data.length) {
@@ -468,7 +468,7 @@
     function registerSW() {
       if (!('serviceWorker' in navigator)) return;
 
-      navigator.serviceWorker.register('/svms/sw.js', { scope: '/svms/' })
+      navigator.serviceWorker.register((window.BASE_URL || '/') + 'sw.js', { scope: (window.BASE_URL || '/') })
         .then(function (reg) {
           swRegistration = reg;
 
@@ -530,7 +530,7 @@
       injectStyles();
       if (document.getElementById('pwa-install-sheet')) return;
 
-      var base = (window.BASE_URL || '/svms/');
+      var base = (window.BASE_URL || '/');
       var sheet = document.createElement('div');
       sheet.id  = 'pwa-install-sheet';
       sheet.setAttribute('role', 'dialog');

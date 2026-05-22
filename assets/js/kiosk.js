@@ -10,7 +10,7 @@
   var IDLE_SECONDS   = 60;   // redirect to home after this many idle seconds
   var WARN_SECONDS   = 5;    // countdown overlay duration
   var CURSOR_SECONDS = 8;    // hide cursor after this many idle seconds
-  var HOME_URL       = (window.KIOSK_BASE || '/svms/') + 'kiosk/';
+  var HOME_URL       = (window.KIOSK_BASE || '/') + 'kiosk/';
 
   /* ── Clock ────────────────────────────────────────────────── */
   function updateClock() {
@@ -274,7 +274,7 @@
     });
 
     function submitPin(pin) {
-      var base = window.KIOSK_BASE || '/svms/';
+      var base = window.KIOSK_BASE || '/';
       fetch(base + 'kiosk/exit.php', {
         method: 'POST',
         credentials: 'same-origin',
@@ -375,7 +375,7 @@
       idle.addEventListener('click', function () {
         this.style.display = 'none';
         resetIdleTimer();
-        window.location.href = '/svms/kiosk/';
+        window.location.href = (window.KIOSK_BASE || '/') + 'kiosk/';
       });
     }
 
@@ -416,13 +416,13 @@
 
   function processBarcode(code) {
     if (!code) return;
-    SVMS.fetch('/svms/api/scan.php', {
+    SVMS.fetch((window.KIOSK_BASE || window.BASE_URL || '/') + 'api/scan.php', {
       method: 'POST',
       body: JSON.stringify({ badge: code })
     })
       .then(function (data) {
         if (data.success) {
-          window.location.href = '/svms/kiosk/step_confirm.php?token=' + encodeURIComponent(data.token);
+          window.location.href = (window.KIOSK_BASE || window.BASE_URL || '/') + 'kiosk/step_confirm.php?token=' + encodeURIComponent(data.token);
         } else {
           SVMS.toast(data.message || 'Badge not found.', 'error');
         }
